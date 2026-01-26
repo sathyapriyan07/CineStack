@@ -4,17 +4,22 @@ import { useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, X } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Plus, X, Edit } from "lucide-react";
+import { toSlug } from "@/lib/utils";
 
-type Person = { id: string; name: string; profile_image_url: string | null };
+type Person = { id: string; name: string; profile_image_url: string | null; bio: string | null; slug: string | null };
 
 export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[] }) {
   const [people, setPeople] = useState<Person[]>(initialPeople);
   const [name, setName] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [bio, setBio] = useState("");
+  const [slug, setSlug] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const supabase = createSupabaseBrowserClient();
 
   const addPerson = async () => {
@@ -22,25 +27,89 @@ export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[]
     setSaving(true);
     setError(null);
     try {
-      const payload: any = { name: name.trim() };
+      const payload: any = { 
+        name: name.trim(),
+        slug: slug.trim() || toSlug(name.trim())
+      };
       if (profileImageUrl.trim()) {
         payload.profile_image_url = profileImageUrl.trim();
+      }
+      if (bio.trim()) {
+        payload.bio = bio.trim();
       }
       const { data, error } = await supabase
         .from("people")
         .insert(payload)
-        .select("id, name, profile_image_url")
+        .select("id, name, profile_image_url, bio, slug")
         .single();
       if (error) throw error;
       setPeople((prev) => [...prev, data]);
       setName("");
       setProfileImageUrl("");
+      setBio("");
+      setSlug("");
       setShowAddForm(false);
     } catch (e: any) {
       setError(e.message ?? "Failed to add person");
     } finally {
       setSaving(false);
     }
+  };
+
+  const updatePerson = async (id: string) => {
+    if (!name.trim()) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const payload: any = { 
+        name: name.trim(),
+        slug: slug.trim() || toSlug(name.trim())
+      };
+      if (profileImageUrl.trim()) {
+        payload.profile_image_url = profileImageUrl.trim();
+      } else {
+        payload.profile_image_url = null;
+      }
+      if (bio.trim()) {
+        payload.bio = bio.trim();
+      } else {
+        payload.bio = null;
+      }
+      const { data, error } = await supabase
+        .from("people")
+        .update(payload)
+        .eq("id", id)
+        .select("id, name, profile_image_url, bio, slug")
+        .single();
+      if (error) throw error;
+      setPeople((prev) => prev.map((p) => (p.id === id ? data : p)));
+      setEditingId(null);
+      setName("");
+      setProfileImageUrl("");
+      setBio("");
+      setSlug("");
+    } catch (e: any) {
+      setError(e.message ?? "Failed to update person");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const startEdit = (person: Person) => {
+    setEditingId(person.id);
+    setName(person.name);
+    setProfileImageUrl(person.profile_image_url || "");
+    setBio(person.bio || "");
+    setSlug(person.slug || "");
+    setShowAddForm(false);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setName("");
+    setProfileImageUrl("");
+    setBio("");
+    setSlug("");
   };
 
   const deletePerson = async (id: string) => {
@@ -90,17 +159,22 @@ export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[]
         </Button>
       </div>
 
-      {showAddForm && (
+      {(showAddForm || editingId) && (
         <div className="rounded-xl border border-white/10 bg-white/5 p-4">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold">New Person</h3>
+            <h3 className="text-sm font-semibold">{editingId ? "Edit Person" : "New Person"}</h3>
             <Button
               size="sm"
               variant="ghost"
               onClick={() => {
-                setShowAddForm(false);
-                setName("");
-                setProfileImageUrl("");
+                if (editingId) cancelEdit();
+                else {
+                  setShowAddForm(false);
+                  setName("");
+                  setProfileImageUrl("");
+                  setBio("");
+                  setSlug("");
+                }
               }}
             >
               <X className="h-3 w-3" />
@@ -112,7 +186,30 @@ export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[]
               <Input
                 placeholder="John Doe"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (!editingId && !slug.trim()) {
+                    setSlug(toSlug(e.target.value));
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/60">Slug</label>
+              <Input
+                placeholder="john-doe"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+              />
+              <p className="mt-1 text-[11px] text-white/40">Auto-generated from name if empty</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/60">Bio</label>
+              <Textarea
+                rows={4}
+                placeholder="Biography..."
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
               />
             </div>
             <div>
@@ -142,8 +239,12 @@ export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[]
                 </div>
               )}
             </div>
-            <Button size="sm" onClick={addPerson} disabled={saving || !name.trim()}>
-              {saving ? "Adding..." : "Add Person"}
+            <Button 
+              size="sm" 
+              onClick={() => editingId ? updatePerson(editingId) : addPerson()} 
+              disabled={saving || !name.trim()}
+            >
+              {saving ? (editingId ? "Updating..." : "Adding...") : (editingId ? "Update Person" : "Add Person")}
             </Button>
           </div>
         </div>
@@ -182,16 +283,31 @@ export default function PeopleAdmin({ initialPeople }: { initialPeople: Person[]
                     </div>
                   )}
                 </td>
-                <td className="px-3 py-2 text-sm text-white/90">{p.name}</td>
+                <td className="px-3 py-2">
+                  <div className="text-sm text-white/90">{p.name}</div>
+                  {p.slug && (
+                    <div className="text-xs text-white/50">/{p.slug}</div>
+                  )}
+                </td>
                 <td className="px-3 py-2 text-right">
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => deletePerson(p.id)}
-                    disabled={saving}
-                  >
-                    Delete
-                  </Button>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => startEdit(p)}
+                      disabled={saving}
+                    >
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => deletePerson(p.id)}
+                      disabled={saving}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

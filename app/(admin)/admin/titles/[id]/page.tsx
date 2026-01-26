@@ -22,7 +22,7 @@ export default async function AdminTitlePage({
         : supabase
             .from("titles")
             .select(
-              "id, type, title, original_title, slug, overview, release_date, runtime, status, age_rating, languages, country, poster_url, backdrop_url, is_published, tmdb_id"
+              "id, type, title, original_title, slug, overview, release_date, runtime, status, age_rating, languages, country, poster_url, backdrop_url, is_published, tmdb_id, admin_boost"
             )
             .eq("id", id)
             .single(),

@@ -5,7 +5,7 @@ export default async function AdminPeoplePage() {
   const supabase = await createSupabaseServerClient();
   const { data: people } = await supabase
     .from("people")
-    .select("id, name, profile_image_url")
+    .select("id, name, profile_image_url, bio, slug")
     .order("name");
 
   return (

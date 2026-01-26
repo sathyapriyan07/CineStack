@@ -1,17 +1,24 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import HomeSections from "@/components/home/home-sections";
+import { getTrendingTitles, getTopRatedTitles } from "@/lib/db/queries";
+import TrendingSection from "@/components/home/trending-section";
+import TopRatedSection from "@/components/home/top-rated-section";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const supabase = await createSupabaseServerClient();
 
-  const { data: sections } = await supabase
-    .from("home_sections")
-    .select(
-      "id, key, title, sort_order, home_section_items(id, title_id, rank, titles!inner(id, title, type, poster_url, slug, is_published))"
-    )
-    .order("sort_order", { ascending: true });
+  const [{ data: sections }, trendingTitles, topRatedTitles] = await Promise.all([
+    supabase
+      .from("home_sections")
+      .select(
+        "id, key, title, sort_order, home_section_items(id, title_id, rank, titles!inner(id, title, type, poster_url, slug, is_published))"
+      )
+      .order("sort_order", { ascending: true }),
+    getTrendingTitles(supabase, 20),
+    getTopRatedTitles(supabase, 20, 5),
+  ]);
 
   const flatSections =
     sections?.map((s: any) => ({
@@ -36,6 +43,8 @@ export default async function HomePage() {
         </p>
       </section>
 
+      <TrendingSection initialTitles={trendingTitles} />
+      <TopRatedSection initialTitles={topRatedTitles} />
       <HomeSections initialSections={flatSections} />
     </div>
   );

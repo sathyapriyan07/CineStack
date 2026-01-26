@@ -32,6 +32,10 @@ const titleSchema = z.object({
     (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
     z.number().int().nullable()
   ),
+  admin_boost: z.preprocess(
+    (v) => (v === "" || v === null || v === undefined ? 0 : Number(v)),
+    z.number().int().min(0).default(0)
+  ),
 });
 
 type TitleFormValues = z.infer<typeof titleSchema>;
@@ -80,6 +84,8 @@ export default function TitleEditor({
   const [newCreditPersonId, setNewCreditPersonId] = useState("");
   const [newCreditRole, setNewCreditRole] = useState("actor");
   const [newCreditCharacter, setNewCreditCharacter] = useState("");
+  const [newCreditBillingOrder, setNewCreditBillingOrder] = useState("");
+  const [newCreditDepartment, setNewCreditDepartment] = useState("");
 
   const form = useForm<TitleFormValues>({
     resolver: zodResolver(titleSchema) as any,
@@ -98,6 +104,7 @@ export default function TitleEditor({
       backdrop_url: initialTitle?.backdrop_url ?? "",
       is_published: initialTitle?.is_published ?? true,
       tmdb_id: initialTitle?.tmdb_id ?? null,
+      admin_boost: initialTitle?.admin_boost ?? 0,
     },
   });
 
@@ -125,6 +132,8 @@ export default function TitleEditor({
           person_id: r.person_id,
           role: r.role,
           character_name: r.character_name,
+          billing_order: r.billing_order,
+          department: r.department,
           people: Array.isArray(r.people) ? r.people[0] : r.people,
         }))
       );
@@ -395,15 +404,22 @@ export default function TitleEditor({
     setSaving(true);
     setError(null);
     try {
+      const payload: any = {
+        title_id: titleId,
+        person_id: newCreditPersonId,
+        role: newCreditRole,
+        character_name: newCreditCharacter.trim() || null,
+      };
+      if (newCreditBillingOrder.trim()) {
+        payload.billing_order = parseInt(newCreditBillingOrder.trim(), 10);
+      }
+      if (newCreditDepartment.trim()) {
+        payload.department = newCreditDepartment.trim();
+      }
       const { data, error } = await supabase
         .from("title_credits")
-        .insert({
-          title_id: titleId,
-          person_id: newCreditPersonId,
-          role: newCreditRole,
-          character_name: newCreditCharacter.trim() || null,
-        })
-        .select("id, person_id, role, character_name, people(id, name, profile_image_url)")
+        .insert(payload)
+        .select("id, person_id, role, character_name, billing_order, department, people(id, name, profile_image_url)")
         .single();
       if (error) throw error;
       setCredits((prev) => [
@@ -413,12 +429,16 @@ export default function TitleEditor({
           person_id: data.person_id,
           role: data.role,
           character_name: data.character_name,
+          billing_order: data.billing_order,
+          department: data.department,
           people: Array.isArray(data.people) ? data.people[0] : data.people,
         },
       ]);
       setNewCreditPersonId("");
       setNewCreditRole("actor");
       setNewCreditCharacter("");
+      setNewCreditBillingOrder("");
+      setNewCreditDepartment("");
     } catch (e: any) {
       setError(e.message ?? "Failed to add credit");
     } finally {
@@ -512,6 +532,11 @@ export default function TitleEditor({
             <div>
               <label className="mb-1 block text-xs text-white/60">Status</label>
               <Input {...form.register("status")} placeholder="Released, Ongoing..." />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/60">Admin Boost (for trending)</label>
+              <Input type="number" {...form.register("admin_boost")} placeholder="0" />
+              <p className="mt-1 text-[11px] text-white/40">Higher boost = more visibility in trending</p>
             </div>
             <div className="flex items-center gap-2">
               <Button type="button" size="sm" variant="outline" onClick={importFromTmdb} disabled={saving}>
@@ -633,14 +658,30 @@ export default function TitleEditor({
               <option value="writer">Writer</option>
               <option value="producer">Producer</option>
               <option value="composer">Composer</option>
+              <option value="music_director">Music Director</option>
               <option value="cinematographer">Cinematographer</option>
               <option value="editor">Editor</option>
             </select>
           </div>
+          <div className="flex gap-2">
+            <Input
+              value={newCreditCharacter}
+              onChange={(e) => setNewCreditCharacter(e.target.value)}
+              placeholder="Character name (for actors)"
+              className="h-8 flex-1 text-xs"
+            />
+            <Input
+              type="number"
+              value={newCreditBillingOrder}
+              onChange={(e) => setNewCreditBillingOrder(e.target.value)}
+              placeholder="Billing order (1=top)"
+              className="h-8 w-24 text-xs"
+            />
+          </div>
           <Input
-            value={newCreditCharacter}
-            onChange={(e) => setNewCreditCharacter(e.target.value)}
-            placeholder="Character name (for actors)"
+            value={newCreditDepartment}
+            onChange={(e) => setNewCreditDepartment(e.target.value)}
+            placeholder="Department (for crew)"
             className="h-8 text-xs"
           />
           <Button size="sm" onClick={addCredit} disabled={saving || !newCreditPersonId}>
@@ -666,6 +707,8 @@ export default function TitleEditor({
                   <div className="text-white/60">
                     {c.role}
                     {c.character_name ? ` • ${c.character_name}` : ""}
+                    {c.billing_order !== null ? ` • #${c.billing_order}` : ""}
+                    {c.department ? ` • ${c.department}` : ""}
                   </div>
                 </div>
               </div>
