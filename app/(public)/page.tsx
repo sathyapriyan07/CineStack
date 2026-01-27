@@ -1,16 +1,30 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import HomeSections from "@/components/home/home-sections";
-import { getTrendingTitles, getTopRatedTitles } from "@/lib/db/queries";
+import {
+  getTrendingTitles,
+  getTopRatedTitles,
+  getPopularTitles,
+  getUpcomingTitles,
+  getRecentlyReleasedTitles
+} from "@/lib/db/queries";
 import TrendingSection from "@/components/home/trending-section";
 import TopRatedSection from "@/components/home/top-rated-section";
-import Link from "next/link";
+import { HeroBanner } from "@/components/ui/hero-banner";
+import { HorizontalCarousel } from "@/components/ui/horizontal-carousel";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const supabase = await createSupabaseServerClient();
 
-  const [{ data: sections }, trendingTitles, topRatedTitles] = await Promise.all([
+  const [
+    { data: sections },
+    trendingTitles,
+    topRatedTitles,
+    popularTitles,
+    upcomingTitles,
+    recentTitles
+  ] = await Promise.all([
     supabase
       .from("home_sections")
       .select(
@@ -19,6 +33,9 @@ export default async function HomePage() {
       .order("sort_order", { ascending: true }),
     getTrendingTitles(supabase, 20),
     getTopRatedTitles(supabase, 20, 5),
+    getPopularTitles(supabase, 20),
+    getUpcomingTitles(supabase, 20),
+    getRecentlyReleasedTitles(supabase, 20, 90),
   ]);
 
   const flatSections =
@@ -34,46 +51,49 @@ export default async function HomePage() {
           .map((i: any) => i.titles) ?? [],
     })) ?? [];
 
+  // Get featured title for hero (first trending title with backdrop)
+  const featuredTitle = trendingTitles.find(t => t.poster_url) || trendingTitles[0];
+
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      {trendingTitles.length > 0 && (
-        <section className="relative h-[70vh] overflow-hidden">
-          <div className="absolute inset-0">
-            {trendingTitles[0].poster_url ? (
-              <img
-                src={trendingTitles[0].poster_url}
-                alt={trendingTitles[0].title}
-                className="h-full w-full object-cover opacity-60"
-              />
-            ) : (
-              <div className="h-full w-full bg-gradient-to-r from-red-900 to-black"></div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent"></div>
-          </div>
-          <div className="relative z-10 flex h-full items-center px-6 max-w-7xl mx-auto">
-            <div className="max-w-lg text-white">
-              <h1 className="text-5xl font-bold mb-4">{trendingTitles[0].title}</h1>
-              <p className="text-lg mb-6 text-white/80">
-                Discover this trending {trendingTitles[0].type} now available on RareFinds.
-              </p>
-              <div className="flex gap-4">
-                <Link
-                  href={`/titles/${trendingTitles[0].slug}`}
-                  className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-500/25"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                  View
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+      {featuredTitle && (
+        <HeroBanner
+          title={{
+            ...featuredTitle,
+            backdrop_url: featuredTitle.poster_url, // Using poster as backdrop for now
+            overview: "Discover this trending title now available on RareFinds.",
+            genres: [] // TODO: Add genres when available
+          }}
+        />
       )}
 
-      <div className="mx-auto max-w-7xl px-6 py-12">
+      <div className="mx-auto max-w-7xl px-6 py-12 space-y-16">
+        {/* Popular Titles */}
+        {popularTitles.length > 0 && (
+          <HorizontalCarousel
+            title="Popular Now"
+            items={popularTitles}
+          />
+        )}
+
+        {/* Upcoming Titles */}
+        {upcomingTitles.length > 0 && (
+          <HorizontalCarousel
+            title="Coming Soon"
+            items={upcomingTitles}
+          />
+        )}
+
+        {/* Recently Released */}
+        {recentTitles.length > 0 && (
+          <HorizontalCarousel
+            title="Recently Released"
+            items={recentTitles}
+          />
+        )}
+
+        {/* Existing Sections */}
         <TrendingSection initialTitles={trendingTitles} />
         <TopRatedSection initialTitles={topRatedTitles} />
         <HomeSections initialSections={flatSections} />

@@ -6,6 +6,26 @@ type TitleCard = {
   type: "movie" | "series";
   slug: string;
   poster_url: string | null;
+  rating?: number;
+  popularity?: number;
+  release_date?: string;
+};
+
+type PersonCard = {
+  id: string;
+  name: string;
+  slug: string;
+  profile_image_url: string | null;
+  known_for_department?: string;
+  popularity?: number;
+};
+
+type CollectionCard = {
+  id: string;
+  name: string;
+  slug: string;
+  poster_url: string | null;
+  backdrop_url: string | null;
 };
 
 /**
@@ -138,7 +158,6 @@ export async function getTopRatedTitles(
     .filter((t): t is NonNullable<typeof t> => t !== null)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
-
   return scored.map((t) => ({
     id: t.id,
     title: t.title,
@@ -146,4 +165,437 @@ export async function getTopRatedTitles(
     slug: t.slug,
     poster_url: t.poster_url,
   }));
+}
+
+/**
+ * Get popular titles based on popularity score
+ */
+export async function getPopularTitles(
+  supabase: SupabaseClient,
+  limit: number = 20
+): Promise<TitleCard[]> {
+  const { data: titles } = await supabase
+    .from("titles")
+    .select("id, title, type, slug, poster_url, popularity, rating, release_date")
+    .eq("is_published", true)
+    .not("popularity", "is", null)
+    .order("popularity", { ascending: false })
+    .limit(limit);
+
+  return (titles || []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    type: t.type as "movie" | "series",
+    slug: t.slug,
+    poster_url: t.poster_url,
+    rating: t.rating,
+    popularity: t.popularity,
+    release_date: t.release_date,
+  }));
+}
+
+/**
+ * Get upcoming titles (movies/series releasing in the future)
+ */
+export async function getUpcomingTitles(
+  supabase: SupabaseClient,
+  limit: number = 20
+): Promise<TitleCard[]> {
+  const today = new Date().toISOString().split("T")[0];
+
+  const { data: titles } = await supabase
+    .from("titles")
+    .select("id, title, type, slug, poster_url, popularity, rating, release_date")
+    .eq("is_published", true)
+    .gte("release_date", today)
+    .order("release_date", { ascending: true })
+    .limit(limit);
+
+  return (titles || []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    type: t.type as "movie" | "series",
+    slug: t.slug,
+    poster_url: t.poster_url,
+    rating: t.rating,
+    popularity: t.popularity,
+    release_date: t.release_date,
+  }));
+}
+
+/**
+ * Get recently released titles
+ */
+export async function getRecentlyReleasedTitles(
+  supabase: SupabaseClient,
+  limit: number = 20,
+  daysBack: number = 90
+): Promise<TitleCard[]> {
+  const date = new Date();
+  date.setDate(date.getDate() - daysBack);
+  const dateStr = date.toISOString().split("T")[0];
+
+  const { data: titles } = await supabase
+    .from("titles")
+    .select("id, title, type, slug, poster_url, popularity, rating, release_date")
+    .eq("is_published", true)
+    .lte("release_date", new Date().toISOString().split("T")[0])
+    .gte("release_date", dateStr)
+    .order("release_date", { ascending: false })
+    .limit(limit);
+
+  return (titles || []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    type: t.type as "movie" | "series",
+    slug: t.slug,
+    poster_url: t.poster_url,
+    rating: t.rating,
+    popularity: t.popularity,
+    release_date: t.release_date,
+  }));
+}
+
+/**
+ * Get titles by genre with sorting and filtering
+ */
+export async function getTitlesByGenre(
+  supabase: SupabaseClient,
+  genreSlug: string,
+  options: {
+    sortBy?: "popularity" | "rating" | "release_date" | "title";
+    sortOrder?: "asc" | "desc";
+    limit?: number;
+    type?: "movie" | "series";
+  } = {}
+): Promise<TitleCard[]> {
+  const { sortBy = "popularity", sortOrder = "desc", limit = 20, type } = options;
+
+  let query = supabase
+    .from("titles")
+    .select(`
+      id, title, type, slug, poster_url, popularity, rating, release_date,
+      title_genres!inner(genres!inner(slug))
+    `)
+    .eq("is_published", true)
+    .eq("title_genres.genres.slug", genreSlug);
+
+  if (type) {
+    query = query.eq("type", type);
+  }
+
+  const { data: titles } = await query
+    .order(sortBy, { ascending: sortOrder === "asc" })
+    .limit(limit);
+
+  return (titles || []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    type: t.type as "movie" | "series",
+    slug: t.slug,
+    poster_url: t.poster_url,
+    rating: t.rating,
+    popularity: t.popularity,
+    release_date: t.release_date,
+  }));
+}
+
+/**
+ * Global search across titles, people, and collections
+ */
+export async function globalSearch(
+  supabase: SupabaseClient,
+  query: string,
+  options: {
+    limit?: number;
+    type?: "all" | "movie" | "series" | "person" | "collection";
+  } = {}
+): Promise<{
+  titles: TitleCard[];
+  people: PersonCard[];
+  collections: CollectionCard[];
+}> {
+  const { limit = 10, type = "all" } = options;
+  const searchTerm = query.toLowerCase().trim();
+
+  if (!searchTerm) {
+    return { titles: [], people: [], collections: [] };
+  }
+
+  const results = {
+    titles: [] as TitleCard[],
+    people: [] as PersonCard[],
+    collections: [] as CollectionCard[],
+  };
+
+  // Search titles
+  if (type === "all" || type === "movie" || type === "series") {
+    const titleQuery = supabase
+      .from("titles")
+      .select("id, title, type, slug, poster_url, popularity, rating, release_date")
+      .eq("is_published", true)
+      .or(`title.ilike.%${searchTerm}%,original_title.ilike.%${searchTerm}%`)
+      .order("popularity", { ascending: false, nullsFirst: false })
+      .limit(limit);
+
+    if (type !== "all") {
+      titleQuery.eq("type", type);
+    }
+
+    const { data: titles } = await titleQuery;
+    results.titles = (titles || []).map((t) => ({
+      id: t.id,
+      title: t.title,
+      type: t.type as "movie" | "series",
+      slug: t.slug,
+      poster_url: t.poster_url,
+      rating: t.rating,
+      popularity: t.popularity,
+      release_date: t.release_date,
+    }));
+  }
+
+  // Search people
+  if (type === "all" || type === "person") {
+    const { data: people } = await supabase
+      .from("people")
+      .select("id, name, slug, profile_image_url, known_for_department, popularity")
+      .ilike("name", `%${searchTerm}%`)
+      .order("popularity", { ascending: false, nullsFirst: false })
+      .limit(limit);
+
+    results.people = (people || []).map((p) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      profile_image_url: p.profile_image_url,
+      known_for_department: p.known_for_department,
+      popularity: p.popularity,
+    }));
+  }
+
+  // Search collections
+  if (type === "all" || type === "collection") {
+    const { data: collections } = await supabase
+      .from("collections")
+      .select("id, name, slug, poster_url, backdrop_url")
+      .ilike("name", `%${searchTerm}%`)
+      .limit(limit);
+
+    results.collections = (collections || []).map((c) => ({
+      id: c.id,
+      name: c.name,
+      slug: c.slug,
+      poster_url: c.poster_url,
+      backdrop_url: c.backdrop_url,
+    }));
+  }
+
+  return results;
+}
+
+/**
+ * Get detailed title information with cast, crew, and media
+ */
+export async function getTitleDetails(
+  supabase: SupabaseClient,
+  slug: string
+) {
+  const { data: title } = await supabase
+    .from("titles")
+    .select(`
+      *,
+      collections(name, slug, poster_url, backdrop_url),
+      title_genres(genres(name, slug)),
+      cast(
+        id,
+        character_name,
+        billing_order,
+        people(id, name, slug, profile_image_url, known_for_department)
+      ),
+      crew(
+        id,
+        department,
+        job,
+        people(id, name, slug, profile_image_url, known_for_department)
+      ),
+      trailers(youtube_url, label),
+      media_uploads(file_path, file_type, is_primary, sort_order)
+    `)
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
+
+  if (!title) return null;
+
+  // Get seasons if it's a series
+  let seasons = null;
+  if (title.type === "series") {
+    const { data: seasonsData } = await supabase
+      .from("seasons")
+      .select(`
+        *,
+        episodes(
+          id,
+          episode_number,
+          title,
+          overview,
+          runtime,
+          air_date,
+          still_url,
+          video_url,
+          is_published
+        )
+      `)
+      .eq("title_id", title.id)
+      .order("season_number", { ascending: true });
+
+    seasons = seasonsData;
+  }
+
+  return {
+    ...title,
+    seasons,
+    genres: title.title_genres?.map((tg: any) => tg.genres) || [],
+    cast: title.cast?.sort((a: any, b: any) => (a.billing_order || 999) - (b.billing_order || 999)) || [],
+    crew: title.crew || [],
+    trailers: title.trailers || [],
+    media: title.media_uploads || [],
+  };
+}
+
+/**
+ * Get detailed person information with filmography
+ */
+export async function getPersonDetails(
+  supabase: SupabaseClient,
+  slug: string
+) {
+  const { data: person } = await supabase
+    .from("people")
+    .select(`
+      *,
+      person_images(file_path, is_primary, aspect_ratio)
+    `)
+    .eq("slug", slug)
+    .single();
+
+  if (!person) return null;
+
+  // Get filmography (cast)
+  const { data: castCredits } = await supabase
+    .from("cast")
+    .select(`
+      character_name,
+      billing_order,
+      titles(id, title, slug, type, poster_url, release_date, rating, popularity)
+    `)
+    .eq("person_id", person.id)
+    .order("titles.release_date", { ascending: false, nullsFirst: false });
+
+  // Get filmography (crew)
+  const { data: crewCredits } = await supabase
+    .from("crew")
+    .select(`
+      department,
+      job,
+      titles(id, title, slug, type, poster_url, release_date, rating, popularity)
+    `)
+    .eq("person_id", person.id)
+    .order("titles.release_date", { ascending: false, nullsFirst: false });
+
+  return {
+    ...person,
+    images: person.person_images || [],
+    cast: castCredits || [],
+    crew: crewCredits || [],
+  };
+}
+
+/**
+ * Get collection details with all titles in the collection
+ */
+export async function getCollectionDetails(
+  supabase: SupabaseClient,
+  slug: string
+) {
+  const { data: collection } = await supabase
+    .from("collections")
+    .select(`
+      *,
+      titles(
+        id,
+        title,
+        slug,
+        type,
+        poster_url,
+        release_date,
+        rating,
+        popularity,
+        overview
+      )
+    `)
+    .eq("slug", slug)
+    .single();
+
+  if (!collection) return null;
+
+  return {
+    ...collection,
+    titles: collection.titles?.sort((a: any, b: any) =>
+      new Date(a.release_date || "1900-01-01").getTime() - new Date(b.release_date || "1900-01-01").getTime()
+    ) || [],
+  };
+}
+
+/**
+ * Get titles sorted by various criteria
+ */
+export async function getTitlesSorted(
+  supabase: SupabaseClient,
+  options: {
+    sortBy: "popularity" | "rating" | "release_date" | "title" | "vote_count";
+    sortOrder?: "asc" | "desc";
+    type?: "movie" | "series";
+    limit?: number;
+    offset?: number;
+  }
+): Promise<TitleCard[]> {
+  const { sortBy, sortOrder = "desc", type, limit = 20, offset = 0 } = options;
+
+  let query = supabase
+    .from("titles")
+    .select("id, title, type, slug, poster_url, popularity, rating, release_date, vote_count")
+    .eq("is_published", true);
+
+  if (type) {
+    query = query.eq("type", type);
+  }
+
+  const { data: titles } = await query
+    .order(sortBy, { ascending: sortOrder === "asc" })
+    .range(offset, offset + limit - 1);
+
+  return (titles || []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    type: t.type as "movie" | "series",
+    slug: t.slug,
+    poster_url: t.poster_url,
+    rating: t.rating,
+    popularity: t.popularity,
+    release_date: t.release_date,
+  }));
+}
+
+/**
+ * Get all genres
+ */
+export async function getGenres(supabase: SupabaseClient) {
+  const { data: genres } = await supabase
+    .from("genres")
+    .select("id, name, slug")
+    .order("name");
+
+  return genres || [];
 }

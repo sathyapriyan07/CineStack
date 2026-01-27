@@ -49,6 +49,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             >
               People
             </Link>
+            <Link
+              href="/admin/import"
+              className="block rounded-md px-2 py-1 hover:bg-white/5"
+            >
+              Import
+            </Link>
           </nav>
         </aside>
         <div className="flex-1">{children}</div>

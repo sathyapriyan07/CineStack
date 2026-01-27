@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { Inter } from "next/font/google";
 import UserMenu from "@/components/ui/user-menu";
+import SearchBar from "@/components/ui/search-bar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,18 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </Link>
 
             <div className="flex-1 max-w-md mx-8">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search movies, series..."
-                  className="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-white/60 focus:outline-none focus:border-blue-400/50 focus:ring-2 focus:ring-blue-400/20 transition-all"
-                />
-                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-blue-400 transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              </div>
+              <SearchBar />
             </div>
 
             <div className="flex items-center gap-4">
