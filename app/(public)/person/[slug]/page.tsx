@@ -26,8 +26,7 @@ export default async function PersonDetailPage({
     .select(
       "id, role, character_name, billing_order, department, titles!inner(id, title, type, slug, poster_url, release_date, is_published)"
     )
-    .eq("person_id", person.id)
-    .order("titles.release_date", { ascending: false, nullsLast: true });
+    .eq("person_id", person.id);
 
   // Separate cast and crew
   const castCredits = (credits ?? []).filter(
@@ -37,7 +36,7 @@ export default async function PersonDetailPage({
     (c: any) => c.role !== "actor" && c.titles?.is_published
   );
 
-  // Sort cast by billing_order, then by release_date
+  // Sort cast by billing_order, then by release_date (newer first, nulls last)
   const sortedCastCredits = [...castCredits].sort((a: any, b: any) => {
     // First sort by billing_order (lower = higher priority)
     const aOrder = a.billing_order ?? 9999;
@@ -54,7 +53,7 @@ export default async function PersonDetailPage({
   });
 
   // Group crew by role
-  const crewByRole = crewCredits.reduce((acc: any, c: any) => {
+  const crewByRole: Record<string, any[]> = crewCredits.reduce((acc: any, c: any) => {
     const role = c.role;
     if (!acc[role]) acc[role] = [];
     acc[role].push(c);
@@ -155,7 +154,7 @@ export default async function PersonDetailPage({
       {Object.keys(crewByRole).length > 0 && (
         <div className="mt-10 space-y-8">
           <h2 className="text-xl font-semibold">Crew Credits</h2>
-          {Object.entries(crewByRole).map(([role, items]) => (
+          {Object.entries(crewByRole).map(([role, items]: [string, any[]]) => (
             <div key={role}>
               <h3 className="mb-4 text-lg font-semibold text-white/80">
                 {roleLabels[role] || role.charAt(0).toUpperCase() + role.slice(1)}

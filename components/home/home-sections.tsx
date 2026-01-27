@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
 
 type TitleCard = {
   id: string;
@@ -77,42 +77,49 @@ export default function HomeSections({
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       {sections.map((section) => (
         <div key={section.id}>
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">{section.title}</h2>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white">{section.title}</h2>
           </div>
-          <div className="scrollbar-thin flex gap-4 overflow-x-auto pb-2">
+          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
             {section.items.map((t) => (
-              <a key={t.id} href={`/titles/${t.slug}`} className="group w-40 shrink-0">
-                <div className="aspect-[2/3] overflow-hidden rounded-lg border border-white/10 bg-slate-900">
+              <Link key={t.id} href={`/titles/${t.slug}`} className="group w-48 shrink-0">
+                <div className="aspect-[2/3] overflow-hidden rounded-lg border border-white/10 bg-black/20 backdrop-blur-sm shadow-lg transition-all group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-blue-500/10">
                   {t.poster_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={t.poster_url}
                       alt={t.title}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                      className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center text-xs text-white/40">
                       No poster
                     </div>
                   )}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button className="bg-blue-600 hover:bg-blue-700 rounded-full p-3 transition-all hover:shadow-lg hover:shadow-blue-500/25">
+                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div className="mt-2 text-xs text-white/60">{t.type.toUpperCase()}</div>
-                <div className="text-sm font-medium text-white/90 line-clamp-2">
-                  {t.title}
+                <div className="mt-3">
+                  <div className="text-sm font-medium text-white line-clamp-2 group-hover:text-blue-400 transition-colors">{t.title}</div>
+                  <div className="text-xs text-white/60 mt-1">{t.type.toUpperCase()}</div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
       ))}
-      <div className="mt-8 flex justify-center">
-        <Button variant="outline" size="sm" asChild>
-          <a href="/titles">Browse all titles</a>
-        </Button>
+      <div className="mt-12 flex justify-center">
+        <Link href="/titles" className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-white transition-all hover:shadow-lg hover:shadow-blue-500/25">
+          Browse all titles
+        </Link>
       </div>
     </div>
   );

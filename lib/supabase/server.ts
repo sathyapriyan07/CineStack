@@ -13,10 +13,22 @@ export async function createSupabaseServerClient() {
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          cookieStore.set({ name, value, ...options });
+          // Only set cookies in Server Actions and Route Handlers
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // Silently fail in page components where cookies can't be modified
+            console.warn("Cookie modification not allowed in this context:", error);
+          }
         },
         remove(name: string, options: CookieOptions) {
-          cookieStore.set({ name, value: "", ...options });
+          // Only remove cookies in Server Actions and Route Handlers
+          try {
+            cookieStore.set({ name, value: "", ...options });
+          } catch (error) {
+            // Silently fail in page components where cookies can't be modified
+            console.warn("Cookie modification not allowed in this context:", error);
+          }
         },
       },
     }

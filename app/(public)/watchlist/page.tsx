@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 
@@ -25,7 +26,7 @@ export default async function WatchlistPage() {
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Your watchlist</h1>
         <Button asChild size="sm" variant="outline">
-          <a href="/titles">Browse</a>
+          <Link href="/titles">Browse</Link>
         </Button>
       </div>
       {!list.length ? (

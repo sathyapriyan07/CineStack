@@ -8,20 +8,18 @@ export default function TitlesFilterBar() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const q = params.get("q") ?? "";
   const type = params.get("type") ?? "";
   const year = params.get("year") ?? "";
   const language = params.get("language") ?? "";
 
   const submit = (formData: FormData) => {
     const next = new URLSearchParams(params.toString());
-    next.set("q", String(formData.get("q") || ""));
     next.set("type", String(formData.get("type") || ""));
     next.set("year", String(formData.get("year") || ""));
     next.set("language", String(formData.get("language") || ""));
     next.delete("page");
     // prune empties
-    ["q", "type", "year", "language"].forEach((k) => {
+    ["type", "year", "language"].forEach((k) => {
       if (!next.get(k)) next.delete(k);
     });
     router.push(`/titles?${next.toString()}`);
@@ -31,38 +29,34 @@ export default function TitlesFilterBar() {
 
   return (
     <form
-      className="flex flex-wrap gap-3 rounded-lg border border-white/10 bg-black/20 p-3 text-sm"
+      className="flex flex-wrap gap-4 rounded-lg border border-white/10 bg-black/20 backdrop-blur-sm p-4 text-sm"
       action={submit}
     >
-      <div className="flex flex-1 min-w-[220px] items-center gap-2">
-        <label className="w-16 text-xs text-white/60">Search</label>
-        <Input name="q" defaultValue={q} placeholder="Title..." className="h-8" />
-      </div>
-      <div className="flex items-center gap-2">
-        <label className="text-xs text-white/60">Type</label>
+      <div className="flex items-center gap-3">
+        <label className="text-sm text-white/80 font-medium">Type</label>
         <select
           name="type"
           defaultValue={type}
-          className="h-8 rounded-md border border-white/15 bg-slate-950 px-2 text-xs text-white/90 outline-none focus:border-[--accent]"
+          className="h-10 rounded-md border border-white/20 bg-black/50 px-3 text-sm text-white outline-none focus:border-blue-400"
         >
           <option value="">All</option>
           <option value="movie">Movies</option>
           <option value="series">Series</option>
         </select>
       </div>
-      <div className="flex items-center gap-2">
-        <label className="text-xs text-white/60">Year</label>
-        <Input name="year" defaultValue={year} placeholder="2024" className="h-8 w-24" />
+      <div className="flex items-center gap-3">
+        <label className="text-sm text-white/80 font-medium">Year</label>
+        <Input name="year" defaultValue={year} placeholder="2024" className="h-10 w-24 bg-white/5 backdrop-blur-sm border-white/10 focus:border-blue-400" />
       </div>
-      <div className="flex items-center gap-2">
-        <label className="text-xs text-white/60">Language</label>
-        <Input name="language" defaultValue={language} placeholder="en" className="h-8 w-20" />
+      <div className="flex items-center gap-3">
+        <label className="text-sm text-white/80 font-medium">Language</label>
+        <Input name="language" defaultValue={language} placeholder="en" className="h-10 w-20 bg-white/5 backdrop-blur-sm border-white/10 focus:border-blue-400" />
       </div>
-      <div className="ml-auto flex items-center gap-2">
-        <Button type="submit" size="sm">
+      <div className="ml-auto flex items-center gap-3">
+        <Button type="submit" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
           Apply
         </Button>
-        <Button type="button" size="sm" variant="ghost" onClick={reset}>
+        <Button type="button" size="sm" variant="ghost" onClick={reset} className="text-white/80 hover:text-blue-400">
           Reset
         </Button>
       </div>

@@ -48,16 +48,32 @@ export default async function AdminTitlePage({
             {isNew ? "Create New Title" : `Edit: ${title.title}`}
           </h1>
           <p className="mt-1 text-xs text-white/60">
-            {isNew 
+            {isNew
               ? "Fill in the form below to create a new movie or series. At minimum, provide a title and type."
               : "Update the title details below."}
           </p>
         </div>
-        {!isNew && (
-          <Button asChild size="sm" variant="outline">
-            <Link href="/admin/titles">← Back to List</Link>
-          </Button>
-        )}
+        <div className="flex gap-2">
+          {!isNew && title.type === "series" && (
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/admin/titles/${id}/seasons`}>
+                Manage Seasons
+              </Link>
+            </Button>
+          )}
+          {!isNew && (
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/admin/titles/${id}/upload`}>
+                Upload Media
+              </Link>
+            </Button>
+          )}
+          {!isNew && (
+            <Button asChild size="sm" variant="outline">
+              <Link href="/admin/titles">← Back to List</Link>
+            </Button>
+          )}
+        </div>
       </div>
       <TitleEditor
         initialTitle={title}

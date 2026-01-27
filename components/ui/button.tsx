@@ -4,15 +4,15 @@ import { Slot } from "@radix-ui/react-slot";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--accent] focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-slate-950",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-slate-950",
   {
     variants: {
       variant: {
         default:
-          "bg-[--accent] text-black hover:bg-emerald-500 active:bg-emerald-400",
+          "bg-red-600 text-white hover:bg-red-700 active:bg-red-500",
         outline:
-          "border border-white/15 bg-transparent text-white/90 hover:bg-white/5",
-        ghost: "bg-transparent hover:bg-white/5 text-white/85",
+          "border border-white/20 bg-transparent text-white/90 hover:bg-white/10 hover:border-red-500",
+        ghost: "bg-transparent hover:bg-white/10 text-white/85 hover:text-red-400",
         destructive: "bg-red-600 text-white hover:bg-red-500 active:bg-red-400",
       },
       size: {

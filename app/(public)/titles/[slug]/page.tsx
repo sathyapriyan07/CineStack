@@ -46,7 +46,7 @@ export default async function TitleDetailPage({
         .from("title_credits")
         .select("id, role, character_name, billing_order, department, people(id, name, profile_image_url, slug)")
         .eq("title_id", title.id)
-        .order("billing_order", { ascending: true, nullsLast: true })
+        .order("billing_order", { ascending: true })
         .order("role", { ascending: true }),
     ]);
 
@@ -120,20 +120,21 @@ export default async function TitleDetailPage({
           </div>
         </div>
 
-        {credits && credits.length > 0 ? (
+        {/* Cast & Crew Section */}
+        {credits && credits.length > 0 && (
           <div className="mt-8">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold">Cast & Crew</h2>
               <Link
                 href={`/titles/${slug}/credits`}
-                className="text-sm text-[--accent] hover:underline"
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
               >
                 See all →
               </Link>
             </div>
             <CreditsDisplay credits={credits} showTopBilled={true} />
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );

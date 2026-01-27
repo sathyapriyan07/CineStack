@@ -34,11 +34,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <form
-        className="w-full max-w-sm rounded-xl border border-white/10 bg-black/30 p-6 shadow-lg"
-        onSubmit={onSubmit}
-      >
+    <form
+      className="w-full max-w-sm rounded-xl border border-white/10 bg-black/30 p-6 shadow-lg"
+      onSubmit={onSubmit}
+    >
         <h1 className="mb-1 text-xl font-semibold text-white/90">Admin Login</h1>
         <p className="mb-4 text-xs text-white/60">
           Only admin accounts are allowed.
@@ -73,7 +72,6 @@ export default function AdminLoginPage() {
           {loading ? "Signing in..." : "Sign in"}
         </Button>
       </form>
-    </div>
   );
 }
 

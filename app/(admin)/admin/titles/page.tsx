@@ -20,7 +20,7 @@ export default async function AdminTitlesPage() {
           <h1 className="text-xl font-semibold">Titles</h1>
           <p className="text-xs text-white/60">Create and edit movies and series.</p>
         </div>
-        <Button asChild size="sm" className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium">
+        <Button asChild size="sm" className="bg-red-600 hover:bg-red-700 text-white font-medium">
           <Link href="/admin/titles/new">+ New title</Link>
         </Button>
       </div>
@@ -45,8 +45,8 @@ export default async function AdminTitlesPage() {
                   <span
                     className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] ${
                       t.is_published
-                        ? "bg-emerald-500/20 text-emerald-200"
-                        : "bg-red-500/20 text-red-200"
+                        ? "bg-red-500/20 text-red-200"
+                        : "bg-gray-500/20 text-gray-200"
                     }`}
                   >
                     {t.is_published ? "Published" : "Draft"}

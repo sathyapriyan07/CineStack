@@ -51,6 +51,8 @@ type Credit = {
   person_id: string;
   role: string;
   character_name: string | null;
+  billing_order: number | null;
+  department: string | null;
   people: Person;
 };
 
@@ -279,7 +281,18 @@ export default function TitleEditor({
       );
       form.setValue("tmdb_id", details.id, { shouldDirty: true });
     } catch (e: any) {
-      setError(e.message ?? "TMDB import failed");
+      console.error("TMDB import error:", e);
+      let errorMessage = "TMDB import failed";
+      
+      if (e.message?.includes("timed out") || e.message?.includes("408")) {
+        errorMessage = "TMDB API request timed out. Please check your internet connection and try again.";
+      } else if (e.message?.includes("No TMDB results found")) {
+        errorMessage = "No matching title found on TMDB. Please check the title name and try again.";
+      } else if (e.message) {
+        errorMessage = `TMDB import failed: ${e.message}`;
+      }
+      
+      setError(errorMessage);
     } finally {
       setSaving(false);
     }
@@ -542,9 +555,10 @@ export default function TitleEditor({
               <Button type="button" size="sm" variant="outline" onClick={importFromTmdb} disabled={saving}>
                 Import from TMDB
               </Button>
-              <span className="text-[11px] text-white/50">
-                Uses server-side `TMDB_API_KEY`
-              </span>
+              <div className="text-[11px] text-white/50 flex flex-col">
+                <span>Uses server-side TMDB_API_KEY</span>
+                <span className="text-amber-400/70">Requires internet connection</span>
+              </div>
             </div>
           </div>
 

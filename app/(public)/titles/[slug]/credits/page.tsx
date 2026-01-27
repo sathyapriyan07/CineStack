@@ -4,6 +4,16 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
+type Person = { id: string; name: string; profile_image_url: string | null; slug: string | null };
+type Credit = {
+  id: string;
+  role: string;
+  character_name: string | null;
+  billing_order: number | null;
+  department: string | null;
+  people: Person;
+};
+
 export default async function TitleCreditsPage({
   params,
 }: {
@@ -27,7 +37,7 @@ export default async function TitleCreditsPage({
       "id, role, character_name, billing_order, department, people(id, name, profile_image_url, slug)"
     )
     .eq("title_id", title.id)
-    .order("billing_order", { ascending: true, nullsLast: true })
+    .order("billing_order", { ascending: true })
     .order("role", { ascending: true });
 
   // Separate cast and crew
@@ -43,12 +53,12 @@ export default async function TitleCreditsPage({
   });
 
   // Group crew by role
-  const crewByRole = crew.reduce((acc: any, c: any) => {
+  const crewByRole: Record<string, any[]> = crew.reduce((acc: any, c: any) => {
     const role = c.role;
     if (!acc[role]) acc[role] = [];
     acc[role].push(c);
     return acc;
-  }, {} as Record<string, any[]>);
+  }, {});
 
   const roleLabels: Record<string, string> = {
     director: "Directors",
@@ -114,7 +124,7 @@ export default async function TitleCreditsPage({
                 {roleLabels[role] || role.charAt(0).toUpperCase() + role.slice(1)}
               </h3>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {items.map((c: any) => (
+                {items.map((c: Credit) => (
                   <Link
                     key={c.id}
                     href={c.people.slug ? `/person/${c.people.slug}` : "#"}

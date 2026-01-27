@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Music2, PlayCircle, Star } from "lucide-react";
+import { PlatformLogo } from "@/components/ui/platform-logo";
+import { Star } from "lucide-react";
 
 type Trailer = { id: string; youtube_url: string; label: string | null };
 type WatchLink = {
@@ -33,7 +34,6 @@ export default function TitleActions({
   const [saving, setSaving] = useState(false);
 
   const mainTrailer = trailers[0] ?? null;
-  const platforms = musicLinks.map((m) => m.platform).join(", ");
 
   useEffect(() => {
     let cancelled = false;
@@ -108,11 +108,10 @@ export default function TitleActions({
   return (
     <div className="flex flex-wrap gap-3">
       {mainTrailer ? (
-        <Button asChild size="lg" className="gap-2 bg-red-600 hover:bg-red-500">
+        <Button asChild size="lg" className="gap-2 bg-red-600 hover:bg-red-700">
           <a href={mainTrailer.youtube_url} target="_blank" rel="noreferrer">
-            <PlayCircle className="h-4 w-4" />
+            <PlatformLogo platform="youtube" />
             <span>Watch Trailer</span>
-            <span className="text-xs font-semibold">YouTube</span>
           </a>
         </Button>
       ) : null}
@@ -126,7 +125,7 @@ export default function TitleActions({
           className="gap-2 border-purple-500/40 text-purple-200 hover:bg-purple-900/20"
         >
           <a href={link.url} target="_blank" rel="noreferrer">
-            <ExternalLink className="h-4 w-4" />
+            <PlatformLogo platform={link.platform} />
             <span>
               Watch on {link.platform}
               {link.region ? ` (${link.region})` : ""}
@@ -135,19 +134,20 @@ export default function TitleActions({
         </Button>
       ))}
 
-      {musicLinks.length ? (
+      {musicLinks.map((link) => (
         <Button
+          key={link.id}
           asChild
           size="lg"
           variant="outline"
           className="gap-2 border-emerald-500/40 text-emerald-200 hover:bg-emerald-900/20"
         >
-          <a href={musicLinks[0].url} target="_blank" rel="noreferrer">
-            <Music2 className="h-4 w-4" />
-            <span>Listen Songs/BGM {platforms ? `(${platforms})` : ""}</span>
+          <a href={link.url} target="_blank" rel="noreferrer">
+            <PlatformLogo platform={link.platform} />
+            <span>Listen on {link.platform}</span>
           </a>
         </Button>
-      ) : null}
+      ))}
 
       <div className="ml-auto flex flex-wrap items-center gap-2">
         <Button
