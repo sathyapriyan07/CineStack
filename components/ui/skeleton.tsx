@@ -8,7 +8,7 @@ interface SkeletonProps {
 export function Skeleton({ className = "", rounded = "rounded-xl" }: SkeletonProps) {
   return (
     <div
-      className={`skeleton bg-gradient-to-r from-[#181818] via-[#232323] to-[#181818] ${rounded} ${className}`}
+      className={`skeleton bg-linear-to-r from-[#181818] via-[#232323] to-[#181818] ${rounded} ${className}`}
       aria-busy="true"
       aria-live="polite"
     />
@@ -22,7 +22,7 @@ export function AppleSkeletonCard() {
 
 export function AppleSkeletonHero() {
   return (
-    <div className="relative h-[72vh] min-h-[420px] w-full overflow-hidden rounded-b-2xl">
+    <div className="relative h-[72vh] min-h-105 w-full overflow-hidden rounded-b-2xl">
       <Skeleton className="absolute inset-0 w-full h-full" />
       <div className="relative z-10 flex h-full items-end pb-24 px-8">
         <div className="space-y-6 w-full max-w-2xl">

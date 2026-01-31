@@ -36,10 +36,10 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
 
   // Load trending/popular titles for default view
-  useEffect(() => {
+  // useEffect(() => {
     const fetchTrendingTitles = async () => {
       try {
-        const supabase = createSupabaseClient();
+        // const supabase = createSupabaseClient();
 
         const { data: titles, error } = await supabase
           .from("titles")
@@ -111,7 +111,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-linear-to-br from-black via-gray-900 to-black">
       {/* Search Bar - Sticky Top */}
       <div className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
         <div className="px-4 py-4">

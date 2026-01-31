@@ -83,7 +83,7 @@ export default function HomeSections({
         <div key={section.id} className="px-6">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-white mb-2">{section.title}</h2>
-            <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+            <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-purple-500 rounded-full"></div>
           </div>
           <div className="flex gap-7 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
             {section.items.map((t) => (

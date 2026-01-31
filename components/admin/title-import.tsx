@@ -154,7 +154,7 @@ export default function TitleImport() {
                   onClick={() => toggleItem(item)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-24 rounded bg-gray-700 flex-shrink-0 overflow-hidden">
+                    <div className="w-16 h-24 rounded bg-gray-700 shrink-0 overflow-hidden">
                       {item.poster_path ? (
                         <img
                           src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
@@ -218,7 +218,7 @@ export default function TitleImport() {
               {selectedItems.map((item) => (
                 <div key={item.id} className="flex items-center justify-between bg-gray-800 p-3 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-14 rounded bg-gray-700 flex-shrink-0 overflow-hidden">
+                    <div className="w-10 h-14 rounded bg-gray-700 shrink-0 overflow-hidden">
                       {item.poster_path && (
                         <img
                           src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}

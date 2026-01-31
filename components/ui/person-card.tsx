@@ -36,7 +36,7 @@ export function PersonCard({
 
   return (
     <Link href={`/person/${slug}`} className={cn("group cursor-pointer", className)}>
-      <div className={cn("flex-shrink-0 space-y-2", sizeClasses[size])}>
+      <div className={cn("shrink-0 space-y-2", sizeClasses[size])}>
         {/* Profile Image */}
         <div className={cn(
           "relative rounded-full overflow-hidden bg-muted mx-auto transition-transform group-hover:scale-105",

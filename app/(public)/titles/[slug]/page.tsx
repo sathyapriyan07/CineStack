@@ -35,19 +35,19 @@ export default async function TitleDetailPage({
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-gray-900 to-black"></div>
         )}
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-[#0f0f0f]/50 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f]/80 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-[#0f0f0f] via-[#0f0f0f]/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#0f0f0f]/80 via-transparent to-transparent"></div>
 
         {/* Content */}
         <div className="relative z-10 flex h-full items-end pb-12">
           <div className="mx-auto max-w-6xl px-6 w-full">
             <div className="flex flex-col md:flex-row gap-8 items-end">
               {/* Poster */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div className="w-48 md:w-64 aspect-[2/3] overflow-hidden rounded-2xl shadow-2xl">
                   {title.poster_url ? (
                     // eslint-disable-next-line @next/next/no-img-element

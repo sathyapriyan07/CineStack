@@ -29,7 +29,7 @@ export function AppleHeroBanner({ title, className }: AppleHeroBannerProps) {
       initial={{ opacity: 0, scale: 1.04 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, ease: "circOut" }}
-      className={`relative h-[72vh] min-h-[420px] flex items-end overflow-hidden rounded-b-2xl shadow-soft ${className}`}
+      className={`relative h-[72vh] min-h-105 flex items-end overflow-hidden rounded-b-2xl shadow-soft ${className}`}
     >
       {/* Parallax Background */}
       <div className="absolute inset-0 w-full h-full">
@@ -42,12 +42,12 @@ export function AppleHeroBanner({ title, className }: AppleHeroBannerProps) {
             loading="eager"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-background to-background-dark" />
+          <div className="w-full h-full bg-linear-to-br from-background to-background-dark" />
         )}
         {/* Cinematic gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
       </div>
       {/* Content */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-8 pb-16 flex flex-col gap-8">
@@ -114,7 +114,7 @@ export function AppleHeroBanner({ title, className }: AppleHeroBannerProps) {
         </div>
       </div>
       {/* Parallax fade at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-background to-transparent pointer-events-none" />
     </motion.section>
   );
 }

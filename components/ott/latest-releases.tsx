@@ -95,10 +95,10 @@ export default function LatestReleases() {
         {latestMovies.map((movie) => (
           <div
             key={movie.id}
-            className="group relative flex-shrink-0 w-32 cursor-pointer overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+            className="group relative shrink-0 w-32 cursor-pointer overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-all hover:scale-105 hover:shadow-xl"
           >
             {/* Poster Image */}
-            <div className="relative aspect-[2/3] overflow-hidden">
+            <div className="relative aspect-2/3 overflow-hidden">
               <img
                 src={movie.poster_url}
                 alt={movie.title}
@@ -106,7 +106,7 @@ export default function LatestReleases() {
               />
 
               {/* Dark overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
               {/* Rating badge */}
               {movie.rating && (
@@ -125,7 +125,7 @@ export default function LatestReleases() {
             </div>
 
             {/* Title overlay on hover */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
               <h3 className="text-xs font-semibold text-white line-clamp-2">
                 {movie.title}
               </h3>

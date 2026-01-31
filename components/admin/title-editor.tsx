@@ -481,7 +481,7 @@ export default function TitleEditor({
         className="space-y-6 rounded-xl border border-white/10 bg-black/20 p-5"
       >
         <div className="flex flex-wrap gap-4">
-          <div className="flex-1 min-w-[260px] space-y-3">
+          <div className="flex-1 min-w-65 space-y-3">
             <div className="flex gap-3">
               <div className="w-1/2">
                 <label className="mb-1 block text-xs text-white/60">Type</label>
@@ -639,7 +639,7 @@ export default function TitleEditor({
             type="submit" 
             size="sm" 
             disabled={saving}
-            className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium min-w-[100px]"
+            className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium min-w-25"
           >
             {saving ? "Saving..." : titleId ? "Update" : "Create Title"}
           </Button>
@@ -707,12 +707,12 @@ export default function TitleEditor({
             <div key={c.id} className="flex items-center justify-between gap-2 rounded-md border border-white/10 bg-slate-950/50 p-2">
               <div className="flex items-center gap-2 min-w-0 flex-1">
                 {c.people.profile_image_url ? (
-                  <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
+                  <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={c.people.profile_image_url} alt={c.people.name} className="h-full w-full object-cover" />
                   </div>
                 ) : (
-                  <div className="h-8 w-8 flex-shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-[10px] text-white/40">
+                  <div className="h-8 w-8 shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-[10px] text-white/40">
                     {c.people.name.charAt(0)}
                   </div>
                 )}

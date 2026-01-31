@@ -44,7 +44,7 @@ export function TitleCard({
 
   return (
     <Link href={`/titles/${slug}`} className={cn("group cursor-pointer", className)}>
-      <div className={cn("flex-shrink-0 space-y-2", sizeClasses[size])}>
+      <div className={cn("shrink-0 space-y-2", sizeClasses[size])}>
         {/* Poster */}
         <div className={cn(
           "relative rounded-lg overflow-hidden bg-muted transition-transform group-hover:scale-105",

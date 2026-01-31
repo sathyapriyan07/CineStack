@@ -37,7 +37,7 @@ export default async function AdminTitlesPage() {
           </thead>
           <tbody>
             {titles?.map((t) => (
-              <tr key={t.id} className="border-b border-white/5 odd:bg-white/[0.02]">
+              <tr key={t.id} className="border-b border-white/5 odd:bg-white/2">
                 <td className="px-3 py-2 text-sm text-white/90">{t.title}</td>
                 <td className="px-3 py-2 capitalize text-white/70">{t.type}</td>
                 <td className="px-3 py-2 text-white/60">{t.release_date?.slice(0, 4)}</td>

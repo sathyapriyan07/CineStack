@@ -145,7 +145,7 @@ export default function PeopleImport() {
                   onClick={() => togglePerson(person)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-full bg-gray-700 flex-shrink-0 overflow-hidden">
+                    <div className="w-16 h-16 rounded-full bg-gray-700 shrink-0 overflow-hidden">
                       {person.profile_path ? (
                         <img
                           src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
@@ -209,7 +209,7 @@ export default function PeopleImport() {
               {selectedPeople.map((person) => (
                 <div key={person.id} className="flex items-center justify-between bg-gray-800 p-3 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0 overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-gray-700 shrink-0 overflow-hidden">
                       {person.profile_path && (
                         <img
                           src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}

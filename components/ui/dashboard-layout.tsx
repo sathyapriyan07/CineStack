@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900/80 to-black">
+    <div className="min-h-screen bg-linear-to-br from-black via-zinc-900/80 to-black">
       <div className="mx-auto flex flex-col md:flex-row max-w-7xl gap-8 px-2 md:px-8 py-8">
         {/* Frosted Sidebar */}
         <aside className="w-full md:w-64 glass rounded-2xl p-6 text-base mb-6 md:mb-0 shadow-2xl flex flex-col gap-8">
@@ -41,7 +41,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               <Link href="/admin/import" className="block rounded-xl px-4 py-3 hover:bg-white/10 focus-glow transition-all font-semibold">
                 Import
               </Link>
-              <Link href="/login" className="block rounded-xl px-4 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white text-center font-bold hover:from-red-700 hover:to-pink-700 focus-glow transition-all md:mt-6">
+              <Link href="/login" className="block rounded-xl px-4 py-3 bg-linear-to-r from-red-600 to-pink-600 text-white text-center font-bold hover:from-red-700 hover:to-pink-700 focus-glow transition-all md:mt-6">
                 Login
               </Link>
             </nav>

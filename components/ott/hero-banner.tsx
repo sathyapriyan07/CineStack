@@ -108,8 +108,8 @@ export default function HeroBanner() {
           className="h-full w-full object-cover"
         />
         {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
@@ -147,7 +147,7 @@ export default function HeroBanner() {
               <>
                 <Button
                   onClick={handleWatchNow}
-                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-pink-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                  className="flex items-center gap-2 rounded-full bg-linear-to-r from-blue-600 to-pink-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
                 >
                   <Play className="h-5 w-5 fill-current" />
                   Watch Now
@@ -165,7 +165,7 @@ export default function HeroBanner() {
             ) : (
               <Button
                 onClick={() => router.push('/login')}
-                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-green-600 to-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                className="flex items-center gap-2 rounded-full bg-linear-to-r from-green-600 to-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
               >
                 <LogIn className="h-5 w-5" />
                 Login to Continue

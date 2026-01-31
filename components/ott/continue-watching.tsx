@@ -156,10 +156,10 @@ export default function ContinueWatching() {
         {continueItems.map((item) => (
           <div
             key={item.id}
-            className="group relative flex-shrink-0 w-40 cursor-pointer overflow-hidden rounded-xl bg-gray-800 shadow-lg transition-transform hover:scale-105"
+            className="group relative shrink-0 w-40 cursor-pointer overflow-hidden rounded-xl bg-gray-800 shadow-lg transition-transform hover:scale-105"
           >
             {/* Poster Image */}
-            <div className="relative aspect-[2/3] overflow-hidden">
+            <div className="relative aspect-2/3 overflow-hidden">
               <img
                 src={item.poster_url}
                 alt={item.title}
@@ -167,12 +167,12 @@ export default function ContinueWatching() {
               />
 
               {/* Dark overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
 
               {/* Progress Bar */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
                 <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-pink-500 transition-all duration-300"
+                  className="h-full bg-linear-to-r from-blue-500 to-pink-500 transition-all duration-300"
                   style={{ width: `${item.progress}%` }}
                 />
               </div>
