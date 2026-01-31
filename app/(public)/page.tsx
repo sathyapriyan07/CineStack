@@ -9,8 +9,8 @@ import {
 } from "@/lib/db/queries";
 import TrendingSection from "@/components/home/trending-section";
 import TopRatedSection from "@/components/home/top-rated-section";
-import { HeroBanner } from "@/components/ui/hero-banner";
-import { HorizontalCarousel } from "@/components/ui/horizontal-carousel";
+import { AppleHeroBanner } from "@/components/ui/apple-hero-banner";
+import { ContentRail } from "@/components/ui/content-rail";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +58,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
       {featuredTitle && (
-        <HeroBanner
+        <AppleHeroBanner
           title={{
             ...featuredTitle,
             backdrop_url: featuredTitle.poster_url, // Using poster as backdrop for now
@@ -71,7 +71,7 @@ export default async function HomePage() {
       <div className="mx-auto max-w-7xl px-6 py-12 space-y-16">
         {/* Popular Titles */}
         {popularTitles.length > 0 && (
-          <HorizontalCarousel
+          <ContentRail
             title="Popular Now"
             items={popularTitles}
           />
@@ -79,7 +79,7 @@ export default async function HomePage() {
 
         {/* Upcoming Titles */}
         {upcomingTitles.length > 0 && (
-          <HorizontalCarousel
+          <ContentRail
             title="Coming Soon"
             items={upcomingTitles}
           />
@@ -87,7 +87,7 @@ export default async function HomePage() {
 
         {/* Recently Released */}
         {recentTitles.length > 0 && (
-          <HorizontalCarousel
+          <ContentRail
             title="Recently Released"
             items={recentTitles}
           />

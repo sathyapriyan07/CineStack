@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { GlassPosterCard } from "@/components/ui/glass-poster-card";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type TitleCard = {
@@ -84,51 +85,18 @@ export default function HomeSections({
             <h2 className="text-3xl font-bold text-white mb-2">{section.title}</h2>
             <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
           </div>
-          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+          <div className="flex gap-7 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
             {section.items.map((t) => (
-              <div key={t.id} className="group cursor-pointer transition-all duration-300 hover:scale-105 flex-shrink-0 w-48">
-                <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-gray-800 shadow-lg group-hover:shadow-2xl group-hover:shadow-black/50 transition-all duration-300">
-                  {t.poster_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={t.poster_url}
-                      alt={t.title}
-                      className="h-full w-full object-cover transition-all duration-300 group-hover:brightness-110"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center bg-gray-700">
-                      <div className="text-center text-gray-500">
-                        <div className="text-4xl mb-2">🎬</div>
-                        <div className="text-sm">No poster</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                    <Link
-                      href={`/titles/${t.slug}`}
-                      className="bg-white/90 hover:bg-white text-black rounded-full p-4 transition-all duration-200 hover:scale-110 shadow-lg"
-                    >
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Title info */}
-                <div className="mt-4">
-                  <h3 className="text-white font-semibold text-base line-clamp-2 group-hover:text-gray-300 transition-colors duration-200">
-                    {t.title}
-                  </h3>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="bg-gray-700 px-2 py-1 rounded-full text-xs font-medium text-gray-300">
-                      {t.type.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <GlassPosterCard
+                key={t.id}
+                id={t.id}
+                title={t.title}
+                type={t.type}
+                slug={t.slug}
+                poster_url={t.poster_url}
+                size="md"
+                className="snap-start"
+              />
             ))}
           </div>
         </div>
