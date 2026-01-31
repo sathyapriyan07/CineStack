@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { label: "Series", href: "/series" },
   { label: "Originals", href: "/originals" },
   { label: "Library", href: "/library" },
-  { label: "Dashboard", href: "/dashboard" },
 ];
 
 export default function FloatingNavbar() {
@@ -53,6 +52,24 @@ export default function FloatingNavbar() {
                 </Link>
               </li>
             ))}
+            {/* Dashboard minimal icon for desktop, button for mobile */}
+            <li className="hidden md:block">
+              <Link href="/dashboard" className="text-lg font-medium text-white/80 hover:text-white transition px-2 py-1 rounded-lg focus-glow focus:outline-none">
+                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline align-middle mr-1"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 9h14"/></svg>
+                <span className="align-middle">Dashboard</span>
+              </Link>
+            </li>
+            <li className="md:hidden">
+              <Link href="/dashboard" className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition focus-glow">
+                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M3 9h14"/></svg>
+              </Link>
+            </li>
+            {/* Login button */}
+            <li>
+              <Link href="/login" className="ml-2 px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition focus-glow">
+                Login
+              </Link>
+            </li>
           </ul>
           {/* Search & Profile */}
           <div className="flex items-center gap-4">

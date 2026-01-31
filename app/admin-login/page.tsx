@@ -35,11 +35,11 @@ export default function AdminLoginPage() {
 
   return (
     <form
-      className="w-full max-w-sm rounded-xl border border-white/10 bg-black/30 p-6 shadow-lg"
+      className="w-full rounded-2xl glass p-8 shadow-xl"
       onSubmit={onSubmit}
     >
-        <h1 className="mb-1 text-xl font-semibold text-white/90">Admin Login</h1>
-        <p className="mb-4 text-xs text-white/60">
+        <h1 className="mb-2 text-2xl font-bold text-white/95 text-center tracking-tight">Admin Login</h1>
+        <p className="mb-6 text-xs text-white/70 text-center">
           Only admin accounts are allowed.
         </p>
         <div className="space-y-3">
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
             )}
           </div>
         ) : null}
-        <Button type="submit" disabled={loading} className="mt-5 w-full">
+        <Button type="submit" disabled={loading} className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl py-2 text-base transition">
           {loading ? "Signing in..." : "Sign in"}
         </Button>
       </form>

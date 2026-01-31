@@ -41,15 +41,15 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4">
+    <div className="w-full">
       <form
-        className="w-full max-w-sm rounded-xl border border-white/10 bg-black/30 p-6 shadow-lg"
+        className="w-full rounded-2xl glass p-8 shadow-xl"
         onSubmit={onSubmit}
       >
-        <h1 className="mb-1 text-xl font-semibold text-white/90">
+        <h1 className="mb-2 text-2xl font-bold text-white/95 text-center tracking-tight">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>
-        <p className="mb-4 text-xs text-white/60">
+        <p className="mb-6 text-xs text-white/70 text-center">
           Guests can browse. Sign in to manage watchlist and ratings.
         </p>
         <div className="space-y-3">
@@ -63,12 +63,12 @@ export default function LoginForm() {
           </div>
         </div>
         {error ? <p className="mt-3 text-xs text-red-300">{error}</p> : null}
-        <Button type="submit" disabled={loading} className="mt-5 w-full">
+        <Button type="submit" disabled={loading} className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl py-2 text-base transition">
           {loading ? "Please wait..." : mode === "signin" ? "Sign in" : "Sign up"}
         </Button>
         <button
           type="button"
-          className="mt-3 w-full text-center text-xs text-white/60 hover:text-white/80"
+          className="mt-4 w-full text-center text-xs text-white/70 hover:text-white/90 underline underline-offset-2"
           onClick={() => setMode((m) => (m === "signin" ? "signup" : "signin"))}
         >
           {mode === "signin"
