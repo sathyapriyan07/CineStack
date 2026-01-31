@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { toSlug } from "@/lib/utils";
 
 interface ImportItem {
   id: number;
@@ -75,10 +76,12 @@ export async function POST(req: Request) {
         const languages = details.spoken_languages?.map((l: any) => l.english_name) || [];
 
         // Create the title
+        const titleText = item.title || item.name || "";
         const { error } = await supabase
           .from("titles")
           .insert({
-            title: item.title || item.name || "",
+            title: titleText,
+            slug: toSlug(titleText),
             original_title: details.original_title || details.original_name,
             overview: details.overview || "",
             type: item.type,
