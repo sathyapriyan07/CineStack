@@ -12,6 +12,9 @@ interface ImportPerson {
 }
 
 export async function POST(req: Request) {
+  if (!process.env.TMDB_API_KEY) {
+    return NextResponse.json({ success: 0, failed: 1, errors: ["TMDB_API_KEY is not set in environment."] }, { status: 400 });
+  }
   try {
     const { people }: { people: ImportPerson[] } = await req.json();
     const supabase = await createSupabaseServerClient();
