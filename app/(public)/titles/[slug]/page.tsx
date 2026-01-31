@@ -48,7 +48,7 @@ export default async function TitleDetailPage({
             <div className="flex flex-col md:flex-row gap-8 items-end">
               {/* Poster */}
               <div className="shrink-0">
-                <div className="w-48 md:w-64 aspect-[2/3] overflow-hidden rounded-2xl shadow-2xl">
+                <div className="w-48 md:w-64 aspect-2/3 overflow-hidden rounded-2xl shadow-2xl">
                   {title.poster_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -185,7 +185,7 @@ export default async function TitleDetailPage({
                 <div key={season.id} className="bg-gray-800/50 rounded-xl p-6">
                   <div className="flex gap-4">
                     {season.poster_url && (
-                      <div className="flex-shrink-0 w-20 aspect-[2/3] rounded-lg overflow-hidden">
+                      <div className="shrink-0 w-20 aspect-2/3 rounded-lg overflow-hidden">
                         <img
                           src={season.poster_url}
                           alt={`Season ${season.season_number}`}
@@ -224,7 +224,7 @@ export default async function TitleDetailPage({
             <div className="bg-gray-800/50 rounded-xl p-6">
               <div className="flex gap-6">
                 {title.collections.poster_url && (
-                  <div className="flex-shrink-0 w-32 aspect-[2/3] rounded-lg overflow-hidden">
+                  <div className="shrink-0 w-32 aspect-2/3 rounded-lg overflow-hidden">
                     <img
                       src={title.collections.poster_url}
                       alt={title.collections.name}
@@ -326,7 +326,7 @@ function CreditsDisplay({ cast, crew, showTopBilled = false }: { cast: any[]; cr
                 className="group flex items-center gap-4 rounded-xl bg-gray-800/50 p-4 transition-all duration-200 hover:bg-gray-700/50 hover:scale-105"
               >
                 {c.people.profile_image_url ? (
-                  <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-2 border-gray-600 group-hover:border-white transition-colors duration-200">
+                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-gray-600 group-hover:border-white transition-colors duration-200">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={c.people.profile_image_url}
@@ -335,7 +335,7 @@ function CreditsDisplay({ cast, crew, showTopBilled = false }: { cast: any[]; cr
                     />
                   </div>
                 ) : (
-                  <div className="h-16 w-16 flex-shrink-0 rounded-full border-2 border-gray-600 bg-gray-700 flex items-center justify-center text-lg font-medium text-gray-300 group-hover:border-white transition-colors duration-200">
+                  <div className="h-16 w-16 shrink-0 rounded-full border-2 border-gray-600 bg-gray-700 flex items-center justify-center text-lg font-medium text-gray-300 group-hover:border-white transition-colors duration-200">
                     {c.people.name.charAt(0)}
                   </div>
                 )}
@@ -371,7 +371,7 @@ function CreditsDisplay({ cast, crew, showTopBilled = false }: { cast: any[]; cr
                 className="group flex items-center gap-4 rounded-xl bg-gray-800/50 p-4 transition-all duration-200 hover:bg-gray-700/50 hover:scale-105"
               >
                 {c.people.profile_image_url ? (
-                  <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-2 border-gray-600 group-hover:border-white transition-colors duration-200">
+                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-gray-600 group-hover:border-white transition-colors duration-200">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={c.people.profile_image_url}
@@ -380,7 +380,7 @@ function CreditsDisplay({ cast, crew, showTopBilled = false }: { cast: any[]; cr
                     />
                   </div>
                 ) : (
-                  <div className="h-16 w-16 flex-shrink-0 rounded-full border-2 border-gray-600 bg-gray-700 flex items-center justify-center text-lg font-medium text-gray-300 group-hover:border-white transition-colors duration-200">
+                  <div className="h-16 w-16 shrink-0 rounded-full border-2 border-gray-600 bg-gray-700 flex items-center justify-center text-lg font-medium text-gray-300 group-hover:border-white transition-colors duration-200">
                     {c.people.name.charAt(0)}
                   </div>
                 )}

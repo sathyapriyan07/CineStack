@@ -21,13 +21,13 @@ export function FloatingModal({ open, onClose, children, className, ...props }: 
           transition={{ duration: 0.24, ease: "circOut" }}
           onClick={onClose}
         >
-          {/* Fix motion.div props if needed, or remove problematic onDrag */}
+          <motion.div
             className={cn("glass rounded-2xl shadow-soft p-8 max-w-lg w-full relative", className)}
             initial={{ scale: 0.98, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.98, opacity: 0 }}
             transition={{ duration: 0.24, ease: "circOut" }}
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); }}
             {...props}
           >
             {children}

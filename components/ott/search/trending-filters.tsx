@@ -76,9 +76,9 @@ export default function TrendingFilters({ activeFilter, onFilterChange }: Trendi
               <button
                 key={filter}
                 onClick={() => onFilterChange(filter)}
-                className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-pink-600 text-white shadow-lg shadow-blue-500/25 border border-white/20"
+                    ? "bg-linear-to-r from-blue-600 to-pink-600 text-white shadow-lg shadow-blue-500/25 border border-white/20"
                     : "bg-white/10 text-white/80 hover:bg-white/20 border border-white/10"
                 }`}
               >

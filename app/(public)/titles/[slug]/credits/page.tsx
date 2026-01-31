@@ -90,7 +90,7 @@ export default async function TitleCreditsPage({
                 className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition hover:border-[--accent] hover:bg-white/10"
               >
                 {c.people.profile_image_url ? (
-                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={c.people.profile_image_url}
@@ -99,7 +99,7 @@ export default async function TitleCreditsPage({
                     />
                   </div>
                 ) : (
-                  <div className="h-12 w-12 flex-shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-sm font-medium text-white/60">
+                  <div className="h-12 w-12 shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-sm font-medium text-white/60">
                     {c.people.name.charAt(0)}
                   </div>
                 )}
@@ -131,7 +131,7 @@ export default async function TitleCreditsPage({
                     className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 p-3 transition hover:border-[--accent] hover:bg-white/10"
                   >
                     {c.people.profile_image_url ? (
-                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md border border-white/10 bg-slate-900">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={c.people.profile_image_url}
@@ -140,7 +140,7 @@ export default async function TitleCreditsPage({
                         />
                       </div>
                     ) : (
-                      <div className="h-12 w-12 flex-shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-sm font-medium text-white/60">
+                      <div className="h-12 w-12 shrink-0 rounded-md border border-white/10 bg-slate-900 flex items-center justify-center text-sm font-medium text-white/60">
                         {c.people.name.charAt(0)}
                       </div>
                     )}

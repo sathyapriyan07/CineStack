@@ -4,7 +4,7 @@ export default function OTTLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-linear-to-br from-black via-gray-900 to-black">
       {/* Mobile viewport optimizations */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       <meta name="theme-color" content="#000000" />

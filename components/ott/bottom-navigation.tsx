@@ -47,7 +47,7 @@ export default function BottomNavigation({ activeTab = "home" }: BottomNavigatio
 
               {/* Active indicator */}
               {isActive && (
-                <div className="absolute bottom-0 left-1/2 h-1 w-8 -translate-x-1/2 rounded-t-full bg-gradient-to-r from-blue-500 to-pink-500" />
+                <div className="absolute bottom-0 left-1/2 h-1 w-8 -translate-x-1/2 rounded-t-full bg-linear-to-r from-blue-500 to-pink-500" />
               )}
             </button>
           );

@@ -51,7 +51,7 @@ export function SkeletonLoader({ type }: SkeletonLoaderProps) {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-40 h-60 bg-gray-700 rounded-xl animate-pulse"
+              className="shrink-0 w-40 h-60 bg-gray-700 rounded-xl animate-pulse"
             />
           ))}
         </div>

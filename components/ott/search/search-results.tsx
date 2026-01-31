@@ -41,7 +41,7 @@ export default function SearchResults({ results, title, isSearchResult = false }
             className="group cursor-pointer"
           >
             {/* Poster Card */}
-            <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-gray-800 shadow-lg transition-transform group-hover:scale-105">
+            <div className="relative aspect-2/3 overflow-hidden rounded-xl bg-gray-800 shadow-lg transition-transform group-hover:scale-105">
               <img
                 src={result.poster}
                 alt={result.title}
@@ -49,17 +49,17 @@ export default function SearchResults({ results, title, isSearchResult = false }
               />
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
 
               {/* Badges */}
               <div className="absolute top-2 left-2 flex flex-col gap-1">
                 {result.isNew && (
-                  <span className="rounded bg-gradient-to-r from-blue-600 to-pink-600 px-2 py-1 text-xs font-bold text-white shadow-lg">
+                  <span className="rounded bg-linear-to-r from-blue-600 to-pink-600 px-2 py-1 text-xs font-bold text-white shadow-lg">
                     NEW RELEASE
                   </span>
                 )}
                 {result.hasNewEpisodes && (
-                  <span className="rounded bg-gradient-to-r from-green-600 to-blue-600 px-2 py-1 text-xs font-bold text-white shadow-lg">
+                  <span className="rounded bg-linear-to-r from-green-600 to-blue-600 px-2 py-1 text-xs font-bold text-white shadow-lg">
                     NEW EPISODES
                   </span>
                 )}

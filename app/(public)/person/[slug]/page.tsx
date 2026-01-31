@@ -65,7 +65,7 @@ export default async function PersonDetailPage({
   return (
     <div className="min-h-screen bg-[#0f0f0f]">
       {/* Hero Section */}
-      <div className="relative h-[50vh] overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
+      <div className="relative h-[50vh] overflow-hidden bg-linear-to-br from-slate-900 to-slate-800">
         <div className="absolute inset-0 bg-black/30" />
 
         {/* Content */}
@@ -73,7 +73,7 @@ export default async function PersonDetailPage({
           <div className="mx-auto max-w-6xl px-6 w-full">
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
               {/* Profile Image */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 {person.profile_image_url ? (
                   <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -198,7 +198,7 @@ export default async function PersonDetailPage({
             <h2 className="text-2xl font-bold text-white mb-8">Photos</h2>
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
               {person.images.slice(0, 8).map((image: any) => (
-                <div key={image.id} className="aspect-[3/4] rounded-lg overflow-hidden bg-gray-800">
+                <div key={image.id} className="aspect-3/4 rounded-lg overflow-hidden bg-gray-800">
                   <img
                     src={image.file_path}
                     alt={`${person.name} photo`}

@@ -78,10 +78,10 @@ export default function RecentSearches({ searches, onClearAll }: RecentSearchesP
           {searches.map((search) => (
             <div
               key={search.id}
-              className="group relative flex-shrink-0 w-24 cursor-pointer"
+              className="group relative shrink-0 w-24 cursor-pointer"
             >
               {/* Poster */}
-              <div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-transform group-hover:scale-105">
+              <div className="relative aspect-2/3 overflow-hidden rounded-lg bg-gray-800 shadow-lg transition-transform group-hover:scale-105">
                 <img
                   src={search.poster}
                   alt={search.title}

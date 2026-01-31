@@ -81,7 +81,7 @@ export default function SearchBar({ onSearch, placeholder = 'Search for "action"
       </div>
 
       {/* Subtle glow effect */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-pink-500/20 blur-xl -z-10 opacity-0 group-focus-within:opacity-100 transition-opacity" />
+      <div className="absolute inset-0 rounded-full bg-linear-to-r from-blue-500/20 to-pink-500/20 blur-xl -z-10 opacity-0 group-focus-within:opacity-100 transition-opacity" />
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function SearchPage() {
     // TODO: Replace with real supabase client if needed
     // const supabase = createSupabaseClient();
     // Example fallback data for build to succeed
-    const fallbackTitles = [
+    const fallbackTitles: SearchResult[] = [
       {
         id: "1",
         title: "Example Movie",
