@@ -24,48 +24,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-[#0f0f0f] text-white font-sans">
-        {/* Floating Apple-style Navbar */}
-        <FloatingNavbar />
-        {/* Mobile dock navigation (Apple TV+ style) */}
-        {/* Mobile dock navigation (Apple TV+ style) */}
-        <div className="md:hidden">
+        {/* Floating navbar only on desktop/tablet */}
+        <div className="hidden md:block">
+          <FloatingNavbar />
+        </div>
+        {/* Bottom nav only on mobile */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
           <MobileDock />
         </div>
-
-        {/* Main */}
-        <main className="min-h-screen">
+        {/* Main content: full width on mobile, centered on larger screens */}
+        <main className="min-h-screen w-full md:max-w-4xl md:mx-auto px-2 sm:px-4 md:px-8 pb-16 md:pb-0">
           {children}
         </main>
-
-        {/* Footer */}
-        <footer className="border-t border-white/10 bg-black/90">
-          <div className="mx-auto max-w-7xl px-6 py-8 text-sm text-white/60 flex flex-col gap-4 md:flex-row md:justify-between">
-            <div>
-              <div className="text-red-500 font-bold text-lg mb-2">RareFinds</div>
-              <p>Your ultimate destination for movies and series.</p>
-            </div>
-            <div className="flex gap-8">
-              <div>
-                <h3 className="font-semibold mb-2">Browse</h3>
-                <ul className="space-y-1">
-                  <li><a href="/titles" className="hover:text-red-400">Movies</a></li>
-                  <li><a href="/series" className="hover:text-red-400">Series</a></li>
-                  <li><a href="/watchlist" className="hover:text-red-400">Watchlist</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Support</h3>
-                <ul className="space-y-1">
-                  <li><a href="#" className="hover:text-red-400">Help</a></li>
-                  <li><a href="#" className="hover:text-red-400">Contact</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-white/10 mt-6 pt-6 text-center text-xs text-white/40">
-            <span>© {new Date().getFullYear()} RareFinds. Uses TMDB API. Not endorsed or certified by TMDB.</span>
-          </div>
-        </footer>
       </body>
     </html>
   );
