@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Play, Plus } from "lucide-react";
+import { Play, Plus, LogIn } from "lucide-react";
 import { createSupabaseBrowserClient as createSupabaseClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface Movie {
   id: string;
@@ -22,6 +23,8 @@ export default function HeroBanner() {
   const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchFeaturedMovies = async () => {
@@ -64,6 +67,23 @@ export default function HeroBanner() {
     };
 
     fetchFeaturedMovies();
+  }, []);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const supabase = createSupabaseClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+
+    checkUser();
+
+    const supabase = createSupabaseClient();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleWatchNow = () => {
@@ -123,22 +143,34 @@ export default function HeroBanner() {
 
           {/* CTA Buttons */}
           <div className="flex gap-4">
-            <Button
-              onClick={handleWatchNow}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-pink-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
-            >
-              <Play className="h-5 w-5 fill-current" />
-              Watch Now
-            </Button>
+            {user ? (
+              <>
+                <Button
+                  onClick={handleWatchNow}
+                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-pink-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                >
+                  <Play className="h-5 w-5 fill-current" />
+                  Watch Now
+                </Button>
 
-            <Button
-              onClick={handleAddToList}
-              variant="outline"
-              className="flex items-center gap-2 rounded-full border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/20"
-            >
-              <Plus className="h-5 w-5" />
-              Add to List
-            </Button>
+                <Button
+                  onClick={handleAddToList}
+                  variant="outline"
+                  className="flex items-center gap-2 rounded-full border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/20"
+                >
+                  <Plus className="h-5 w-5" />
+                  Add to List
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => router.push('/login')}
+                className="flex items-center gap-2 rounded-full bg-gradient-to-r from-green-600 to-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+              >
+                <LogIn className="h-5 w-5" />
+                Login to Continue
+              </Button>
+            )}
           </div>
         </div>
       </div>

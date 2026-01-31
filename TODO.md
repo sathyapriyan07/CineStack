@@ -2,6 +2,10 @@ l# OTT Platform - Make Everything Work Properly
 
 ## ✅ Completed Tasks
 
+### Dashboard Improvements
+- [x] **Remove Loading Icons** - Eliminated Suspense fallbacks and SkeletonLoader components from dashboard (app/ott/page.tsx)
+- [x] **Add Login Button** - Added conditional login button in hero banner for unauthenticated users
+
 ### OTT Components Connected to Real Data
 - [x] **Hero Banner** - Now fetches top-rated movies from Supabase instead of mock data
 - [x] **Latest Releases** - Fetches recently released titles ordered by release date
