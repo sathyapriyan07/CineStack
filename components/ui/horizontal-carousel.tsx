@@ -70,14 +70,15 @@ export function HorizontalCarousel({ title, items, className }: HorizontalCarous
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex-shrink-0 w-48 group cursor-pointer"
+            className="flex-shrink-0 w-48 flex flex-col items-center cursor-pointer"
           >
-            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-muted">
+            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-muted flex items-center justify-center">
               {item.poster_url ? (
                 <img
                   src={item.poster_url}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="h-full object-contain mx-auto"
+                  style={{ display: 'block', margin: '0 auto' }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -98,8 +99,8 @@ export function HorizontalCarousel({ title, items, className }: HorizontalCarous
               </div>
             </div>
 
-            <div className="mt-2 space-y-1">
-              <h3 className="font-medium line-clamp-2 group-hover:text-primary transition-colors">
+            <div className="mt-2 space-y-1 text-center w-full">
+              <h3 className="font-medium line-clamp-2">
                 {item.title}
               </h3>
               {item.release_date && (

@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createSupabaseBrowserClient as createSupabaseClient } from "@/lib/supabase/client";
 
 interface ContinueItem {
   id: string;
@@ -10,46 +11,112 @@ interface ContinueItem {
   progress: number; // 0-100
   remainingTime: string;
   episode?: string;
+  slug: string;
 }
 
 export default function ContinueWatching() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [continueItems, setContinueItems] = useState<ContinueItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const continueItems: ContinueItem[] = [
-    {
-      id: "1",
-      title: "The Crown",
-      poster_url: "/api/placeholder/200/300",
-      progress: 65,
-      remainingTime: "1h 36m left",
-      episode: "S6 E8",
-    },
-    {
-      id: "2",
-      title: "Stranger Things",
-      poster_url: "/api/placeholder/200/300",
-      progress: 42,
-      remainingTime: "45m left",
-      episode: "S4 E7",
-    },
-    {
-      id: "3",
-      title: "Breaking Bad",
-      poster_url: "/api/placeholder/200/300",
-      progress: 78,
-      remainingTime: "23m left",
-      episode: "S5 E12",
-    },
-    {
-      id: "4",
-      title: "The Witcher",
-      poster_url: "/api/placeholder/200/300",
-      progress: 31,
-      remainingTime: "2h 12m left",
-      episode: "S3 E2",
-    },
-  ];
+  useEffect(() => {
+    const fetchContinueWatching = async () => {
+      try {
+        const supabase = createSupabaseClient();
+
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          // If no user, show some popular titles as suggestions
+          const { data: popularTitles, error } = await supabase
+            .from("titles")
+            .select("id, title, poster_url, slug, type")
+            .eq("is_published", true)
+            .order("vote_average", { ascending: false })
+            .limit(4);
+
+          if (!error && popularTitles) {
+            const formattedItems = popularTitles.map(title => ({
+              id: title.id,
+              title: title.title,
+              poster_url: title.poster_url,
+              progress: Math.floor(Math.random() * 80) + 20, // Random progress for demo
+              remainingTime: `${Math.floor(Math.random() * 3) + 1}h ${Math.floor(Math.random() * 60)}m left`,
+              episode: title.type === 'series' ? `S${Math.floor(Math.random() * 5) + 1} E${Math.floor(Math.random() * 10) + 1}` : undefined,
+              slug: title.slug,
+            }));
+            setContinueItems(formattedItems);
+          }
+          return;
+        }
+
+        // Fetch user's watchlist
+        const { data: watchlist, error } = await supabase
+          .from("watchlist")
+          .select(`
+            id,
+            titles: title_id (
+              id,
+              title,
+              poster_url,
+              slug,
+              type
+            )
+          `)
+          .eq("user_id", user.id)
+          .limit(6);
+
+        if (error) {
+          console.error("Error fetching watchlist:", error);
+          return;
+        }
+
+        if (watchlist && watchlist.length > 0) {
+          const formattedItems = watchlist.map(item => {
+            const title = item.titles as any;
+            return {
+              id: item.id,
+              title: title.title,
+              poster_url: title.poster_url,
+              progress: Math.floor(Math.random() * 80) + 20, // Random progress for demo
+              remainingTime: `${Math.floor(Math.random() * 3) + 1}h ${Math.floor(Math.random() * 60)}m left`,
+              episode: title.type === 'series' ? `S${Math.floor(Math.random() * 5) + 1} E${Math.floor(Math.random() * 10) + 1}` : undefined,
+              slug: title.slug,
+            };
+          });
+          setContinueItems(formattedItems);
+        } else {
+          // If no watchlist, show popular titles
+          const { data: popularTitles } = await supabase
+            .from("titles")
+            .select("id, title, poster_url, slug, type")
+            .eq("is_published", true)
+            .order("vote_average", { ascending: false })
+            .limit(4);
+
+          if (popularTitles) {
+            const formattedItems = popularTitles.map(title => ({
+              id: title.id,
+              title: title.title,
+              poster_url: title.poster_url,
+              progress: Math.floor(Math.random() * 80) + 20,
+              remainingTime: `${Math.floor(Math.random() * 3) + 1}h ${Math.floor(Math.random() * 60)}m left`,
+              episode: title.type === 'series' ? `S${Math.floor(Math.random() * 5) + 1} E${Math.floor(Math.random() * 10) + 1}` : undefined,
+              slug: title.slug,
+            }));
+            setContinueItems(formattedItems);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching continue watching:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContinueWatching();
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {

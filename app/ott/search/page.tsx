@@ -31,76 +31,74 @@ export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("India");
   const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Mock recent searches data
-  const [recentSearches] = useState<RecentSearch[]>([
-    { id: "1", title: "Dune: Part Two", poster: "/api/placeholder/100/150", type: "movie" },
-    { id: "2", title: "Stranger Things", poster: "/api/placeholder/100/150", type: "series" },
-    { id: "3", title: "Oppenheimer", poster: "/api/placeholder/100/150", type: "movie" },
-    { id: "4", title: "The Crown", poster: "/api/placeholder/100/150", type: "series" },
-  ]);
+  // Load trending/popular titles for default view
+  useEffect(() => {
+    const fetchTrendingTitles = async () => {
+      try {
+        const supabase = createSupabaseClient();
 
-  // Mock search results
-  const [searchResults] = useState<SearchResult[]>([
-    {
-      id: "1",
-      title: "Dune: Part Two",
-      poster: "/api/placeholder/200/300",
-      type: "movie",
-      year: "2024",
-      rating: 8.5,
-      isNew: true,
-    },
-    {
-      id: "2",
-      title: "Oppenheimer",
-      poster: "/api/placeholder/200/300",
-      type: "movie",
-      year: "2023",
-      rating: 8.3,
-      isNew: false,
-    },
-    {
-      id: "3",
-      title: "Poor Things",
-      poster: "/api/placeholder/200/300",
-      type: "movie",
-      year: "2023",
-      rating: 7.9,
-      isNew: true,
-    },
-    {
-      id: "4",
-      title: "Stranger Things",
-      poster: "/api/placeholder/200/300",
-      type: "series",
-      year: "2016",
-      rating: 8.7,
-      hasNewEpisodes: true,
-    },
-    {
-      id: "5",
-      title: "The Crown",
-      poster: "/api/placeholder/200/300",
-      type: "series",
-      year: "2016",
-      rating: 8.6,
-      hasNewEpisodes: false,
-    },
-    {
-      id: "6",
-      title: "Killers of the Flower Moon",
-      poster: "/api/placeholder/200/300",
-      type: "movie",
-      year: "2023",
-      rating: 7.6,
-      isNew: false,
-    },
-  ]);
+        const { data: titles, error } = await supabase
+          .from("titles")
+          .select("id, title, poster_url, release_date, vote_average, type, slug")
+          .eq("is_published", true)
+          .order("vote_average", { ascending: false })
+          .limit(10);
 
-  const handleSearch = (query: string) => {
+        if (!error && titles) {
+          const formattedResults = titles.map((title: any) => ({
+            id: title.id,
+            title: title.title,
+            poster: title.poster_url,
+            type: title.type as "movie" | "series",
+            year: title.release_date?.split('-')[0] || 'TBA',
+            rating: title.vote_average || 0,
+            isNew: title.release_date && new Date(title.release_date) > new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // New if released in last year
+            hasNewEpisodes: title.type === 'series' && Math.random() > 0.5, // Random for demo
+          }));
+          setSearchResults(formattedResults);
+        }
+      } catch (error) {
+        console.error("Error fetching trending titles:", error);
+      }
+    };
+
+    fetchTrendingTitles();
+  }, []);
+
+  const handleSearch = async (query: string) => {
     setSearchQuery(query);
     setIsSearching(query.length > 0);
+
+    if (query.length > 0) {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+
+        if (data.results) {
+          const formattedResults = data.results.map((result: any) => ({
+            id: result.id,
+            title: result.title,
+            poster: result.poster_url || result.profile_image_url || "/api/placeholder/200/300",
+            type: result.type === "person" ? "movie" : (result.type as "movie" | "series"), // Handle person type
+            year: result.release_date?.split('-')[0] || result.birth_date?.split('-')[0] || 'TBA',
+            rating: result.vote_average || 0,
+            isNew: result.release_date && new Date(result.release_date) > new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+            hasNewEpisodes: result.type === 'series' && Math.random() > 0.5,
+          }));
+          setSearchResults(formattedResults);
+        }
+      } catch (error) {
+        console.error("Error searching:", error);
+        setSearchResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   const handleFilterChange = (filter: string) => {

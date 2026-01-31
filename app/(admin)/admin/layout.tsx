@@ -16,46 +16,36 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="mx-auto flex max-w-6xl gap-6 px-4 py-6">
-        <aside className="w-56 rounded-xl border border-white/10 bg-black/30 p-4 text-sm">
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-white/60">
-            Admin
-          </h2>
-          <nav className="space-y-1 text-white/85">
-            <Link href="/admin" className="block rounded-md px-2 py-1 hover:bg-white/5">
-              Overview
-            </Link>
-            <Link
-              href="/admin/titles"
-              className="block rounded-md px-2 py-1 hover:bg-white/5"
-            >
-              Titles
-            </Link>
-            <Link
-              href="/admin/genres"
-              className="block rounded-md px-2 py-1 hover:bg-white/5"
-            >
-              Genres
-            </Link>
-            <Link
-              href="/admin/home-sections"
-              className="block rounded-md px-2 py-1 hover:bg-white/5"
-            >
-              Home Sections
-            </Link>
-            <Link
-              href="/admin/people"
-              className="block rounded-md px-2 py-1 hover:bg-white/5"
-            >
-              People
-            </Link>
-            <Link
-              href="/admin/import"
-              className="block rounded-md px-2 py-1 hover:bg-white/5"
-            >
-              Import
-            </Link>
-          </nav>
+      <div className="mx-auto flex flex-col md:flex-row max-w-6xl gap-6 px-2 md:px-4 py-4 md:py-6">
+        <aside className="w-full md:w-56 rounded-xl border border-white/10 bg-black/30 p-2 md:p-4 text-sm mb-4 md:mb-0">
+          <div className="flex flex-col md:block md:space-y-1">
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-white/60 hidden md:block">
+              Admin
+            </h2>
+            <nav className="flex flex-row md:flex-col gap-2 md:gap-0 text-white/85">
+              <Link href="/admin" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                Overview
+              </Link>
+              <Link href="/admin/titles" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                Titles
+              </Link>
+              <Link href="/admin/genres" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                Genres
+              </Link>
+              <Link href="/admin/home-sections" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                Home Sections
+              </Link>
+              <Link href="/admin/people" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                People
+              </Link>
+              <Link href="/admin/import" className="block rounded-md px-2 py-1 hover:bg-white/5">
+                Import
+              </Link>
+              <Link href="/login" className="block rounded-md px-2 py-1 bg-red-600 text-white text-center font-semibold hover:bg-red-700 transition md:mt-4">
+                Login
+              </Link>
+            </nav>
+          </div>
         </aside>
         <div className="flex-1">{children}</div>
       </div>

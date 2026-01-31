@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Plus } from "lucide-react";
+import { createSupabaseBrowserClient as createSupabaseClient } from "@/lib/supabase/client";
 
 interface Movie {
   id: string;
@@ -13,35 +14,57 @@ interface Movie {
   release_date: string;
   genres: { name: string }[];
   vote_average: number;
+  slug: string;
 }
 
-// Mock featured movies data
-const featuredMovies: Movie[] = [
-  {
-    id: "1",
-    title: "Inception",
-    overview: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
-    poster_url: "/placeholder-poster.jpg",
-    backdrop_url: "/placeholder-backdrop.jpg",
-    release_date: "2010",
-    genres: [{ name: "Action" }, { name: "Sci-Fi" }],
-    vote_average: 8.8,
-  },
-  {
-    id: "2",
-    title: "The Dark Knight",
-    overview: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.",
-    poster_url: "/placeholder-poster.jpg",
-    backdrop_url: "/placeholder-backdrop.jpg",
-    release_date: "2008",
-    genres: [{ name: "Action" }, { name: "Crime" }],
-    vote_average: 9.0,
-  },
-];
-
 export default function HeroBanner() {
-  const [currentMovie, setCurrentMovie] = useState<Movie | null>(featuredMovies[0]);
+  const [featuredMovies, setFeaturedMovies] = useState<Movie[]>([]);
+  const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedMovies = async () => {
+      try {
+        const supabase = createSupabaseClient();
+
+        // Fetch featured movies (you can modify this query based on your home sections or featured logic)
+        const { data: movies, error } = await supabase
+          .from("titles")
+          .select(`
+            id,
+            title,
+            overview,
+            poster_url,
+            backdrop_url,
+            release_date,
+            vote_average,
+            slug,
+            genres:genre_titles(name)
+          `)
+          .eq("is_published", true)
+          .eq("type", "movie")
+          .order("vote_average", { ascending: false })
+          .limit(5);
+
+        if (error) {
+          console.error("Error fetching featured movies:", error);
+          return;
+        }
+
+        if (movies && movies.length > 0) {
+          setFeaturedMovies(movies);
+          setCurrentMovie(movies[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching featured movies:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedMovies();
+  }, []);
 
   const handleWatchNow = () => {
     // Handle watch now action

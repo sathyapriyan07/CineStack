@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createSupabaseBrowserClient as createSupabaseClient } from "@/lib/supabase/client";
 
 interface Movie {
   id: string;
@@ -9,56 +10,52 @@ interface Movie {
   poster_url: string;
   release_date: string;
   rating?: number;
+  slug: string;
 }
 
 export default function LatestReleases() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [latestMovies, setLatestMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const latestMovies: Movie[] = [
-    {
-      id: "1",
-      title: "Dune: Part Two",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2024",
-      rating: 8.5,
-    },
-    {
-      id: "2",
-      title: "Oppenheimer",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2023",
-      rating: 8.3,
-    },
-    {
-      id: "3",
-      title: "Poor Things",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2023",
-      rating: 7.9,
-    },
-    {
-      id: "4",
-      title: "Killers of the Flower Moon",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2023",
-      rating: 7.6,
-    },
-    {
-      id: "5",
-      title: "The Holdovers",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2023",
-      rating: 7.8,
-    },
-    {
-      id: "6",
-      title: "Anatomy of a Fall",
-      poster_url: "/api/placeholder/200/300",
-      release_date: "2023",
-      rating: 7.7,
-    },
-  ];
+  useEffect(() => {
+    const fetchLatestReleases = async () => {
+      try {
+        const supabase = createSupabaseClient();
+
+        // Fetch latest released titles
+        const { data: movies, error } = await supabase
+          .from("titles")
+          .select("id, title, poster_url, release_date, vote_average, slug")
+          .eq("is_published", true)
+          .order("release_date", { ascending: false })
+          .limit(10);
+
+        if (error) {
+          console.error("Error fetching latest releases:", error);
+          return;
+        }
+
+        if (movies) {
+          const formattedMovies = movies.map(movie => ({
+            id: movie.id,
+            title: movie.title,
+            poster_url: movie.poster_url,
+            release_date: movie.release_date?.split('-')[0] || 'TBA', // Extract year
+            rating: movie.vote_average,
+            slug: movie.slug,
+          }));
+          setLatestMovies(formattedMovies);
+        }
+      } catch (error) {
+        console.error("Error fetching latest releases:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestReleases();
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
