@@ -1,10 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
+
+import FloatingNavbar from "@/components/ui/floating-navbar";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Inter } from "next/font/google";
-import UserMenu from "@/components/ui/user-menu";
-import SearchBar from "@/components/ui/search-bar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,37 +24,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-[#0f0f0f] text-white font-sans">
-        {/* Header */}
-        <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-xl border-b border-white/10">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link
-              href="/"
-              className="text-2xl font-bold tracking-tight text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              RareFinds
-            </Link>
-
-            <div className="flex-1 max-w-md mx-8">
-              <SearchBar />
-            </div>
-
-            <div className="flex items-center gap-4">
-              <nav className="hidden md:flex gap-6 text-sm text-white/80">
-                <Link href="/titles" className="hover:text-red-500 transition">
-                  Movies
-                </Link>
-                <Link href="/series" className="hover:text-red-500 transition">
-                  Series
-                </Link>
-                <Link href="/watchlist" className="hover:text-red-500 transition">
-                  Watchlist
-                </Link>
-              </nav>
-
-              <UserMenu />
-            </div>
-          </div>
-        </header>
+        {/* Floating Apple-style Navbar */}
+        <FloatingNavbar />
+        {/* Mobile dock navigation (Apple TV+ style) */}
+        {/* Mobile dock navigation (Apple TV+ style) */}
+        <div className="md:hidden">
+          {/** @ts-expect-error Server Component dynamic import */}
+          {dynamic(() => import("@/components/ott/bottom-navigation"), { ssr: false })()}
+        </div>
 
         {/* Main */}
         <main className="min-h-screen">
@@ -71,9 +49,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <div>
                 <h3 className="font-semibold mb-2">Browse</h3>
                 <ul className="space-y-1">
-                  <li><Link href="/titles" className="hover:text-red-400">Movies</Link></li>
-                  <li><Link href="/series" className="hover:text-red-400">Series</Link></li>
-                  <li><Link href="/watchlist" className="hover:text-red-400">Watchlist</Link></li>
+                  <li><a href="/titles" className="hover:text-red-400">Movies</a></li>
+                  <li><a href="/series" className="hover:text-red-400">Series</a></li>
+                  <li><a href="/watchlist" className="hover:text-red-400">Watchlist</a></li>
                 </ul>
               </div>
               <div>
