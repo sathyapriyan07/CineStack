@@ -37,9 +37,9 @@ export function TitleCard({
   };
 
   const aspectClasses = {
-    sm: "aspect-[2/3]",
-    md: "aspect-[2/3]",
-    lg: "aspect-[2/3]"
+    sm: "aspect-2/3",
+    md: "aspect-2/3",
+    lg: "aspect-2/3"
   };
 
   return (

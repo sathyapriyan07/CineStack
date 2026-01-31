@@ -138,10 +138,10 @@ export default function AdminTitleUploadPage({ params }: UploadPageProps) {
               <img
                 src={title.poster_url}
                 alt="Movie poster"
-                className="w-full aspect-[2/3] object-cover rounded-lg"
+                className="w-full aspect-2/3 object-cover rounded-lg"
               />
             ) : (
-              <div className="w-full aspect-[2/3] bg-gray-800 rounded-lg flex items-center justify-center text-white/40">
+              <div className="w-full aspect-2/3 bg-gray-800 rounded-lg flex items-center justify-center text-white/40">
                 No poster
               </div>
             )}
@@ -202,7 +202,7 @@ export default function AdminTitleUploadPage({ params }: UploadPageProps) {
         <h3 className="text-lg font-semibold mb-4">Additional Media</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white/80 flex items-center gap-2">
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
               <Film className="h-4 w-4" />
               Trailer
             </label>
@@ -217,7 +217,7 @@ export default function AdminTitleUploadPage({ params }: UploadPageProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white/80 flex items-center gap-2">
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
               <Image className="h-4 w-4" />
               Gallery Images
             </label>
@@ -233,7 +233,7 @@ export default function AdminTitleUploadPage({ params }: UploadPageProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-white/80 flex items-center gap-2">
+            <label className="text-sm font-medium text-white/80 flex items-center gap-2">
               <Music className="h-4 w-4" />
               Soundtrack
             </label>

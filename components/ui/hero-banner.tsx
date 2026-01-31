@@ -34,11 +34,11 @@ export function HeroBanner({ title, className }: HeroBannerProps) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-r from-slate-900 to-slate-700" />
+          <div className="w-full h-full bg-linear-to-r from-slate-900 to-slate-700" />
         )}
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/40 to-transparent" />
       </div>
 
       {/* Content */}
@@ -105,7 +105,7 @@ export function HeroBanner({ title, className }: HeroBannerProps) {
       </div>
 
       {/* Fade effect at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent" />
     </div>
   );
 }

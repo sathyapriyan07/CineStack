@@ -70,9 +70,9 @@ export function HorizontalCarousel({ title, items, className }: HorizontalCarous
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex-shrink-0 w-48 flex flex-col items-center cursor-pointer"
+            className="shrink-0 w-48 flex flex-col items-center cursor-pointer"
           >
-            <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+            <div className="relative aspect-2/3 rounded-lg overflow-hidden bg-muted flex items-center justify-center">
               {item.poster_url ? (
                 <img
                   src={item.poster_url}

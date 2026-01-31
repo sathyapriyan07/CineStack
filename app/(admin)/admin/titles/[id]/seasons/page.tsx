@@ -74,7 +74,7 @@ export default async function AdminTitleSeasonsPage({ params }: PageProps) {
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-4">
                 {/* Season Poster */}
-                <div className="h-20 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-800">
+                <div className="h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-800">
                   {season.poster_url ? (
                     <img
                       src={season.poster_url}

@@ -41,7 +41,7 @@ export default async function WatchlistPage() {
               href={`/titles/${t.slug}`}
               className="group rounded-lg border border-white/10 bg-slate-950/60 p-2 transition hover:border-[--accent] hover:bg-white/5"
             >
-              <div className="aspect-[2/3] overflow-hidden rounded-md bg-slate-900">
+              <div className="aspect-2/3 overflow-hidden rounded-md bg-slate-900">
                 {t.poster_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img

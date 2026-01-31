@@ -101,7 +101,7 @@ export default function DownloadsPage() {
                 className="flex bg-gray-900 rounded-lg overflow-hidden"
               >
                 {/* Poster */}
-                <div className="w-20 h-28 flex-shrink-0">
+                <div className="w-20 h-28 shrink-0">
                   <img
                     src={item.poster_url}
                     alt={item.title}

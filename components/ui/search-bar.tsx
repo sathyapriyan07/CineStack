@@ -128,7 +128,7 @@ export default function SearchBar() {
               onClick={() => handleResultClick(result)}
               className="flex items-center gap-3 p-3 hover:bg-white/10 cursor-pointer transition-colors border-b border-white/5 last:border-b-0"
             >
-              <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-700 flex-shrink-0">
+              <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-700 shrink-0">
                 {result.poster_url || result.profile_image_url ? (
                   <img
                     src={result.poster_url || result.profile_image_url}

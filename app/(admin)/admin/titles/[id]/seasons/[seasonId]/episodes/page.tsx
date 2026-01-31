@@ -82,7 +82,7 @@ export default async function AdminSeasonEpisodesPage({ params }: PageProps) {
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-4">
                 {/* Episode Still */}
-                <div className="h-20 w-32 flex-shrink-0 overflow-hidden rounded-lg bg-gray-800">
+                <div className="h-20 w-32 shrink-0 overflow-hidden rounded-lg bg-gray-800">
                   {episode.still_url ? (
                     <img
                       src={episode.still_url}
