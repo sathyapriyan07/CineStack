@@ -1,3 +1,5 @@
+
+"use client";
 import { Play, Info, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";

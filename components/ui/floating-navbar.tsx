@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import UserMenu from "@/components/ui/user-menu";
 import SearchBar from "@/components/ui/search-bar";

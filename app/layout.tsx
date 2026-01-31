@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 import FloatingNavbar from "@/components/ui/floating-navbar";
-import dynamic from "next/dynamic";
 import Link from "next/link";
+import MobileDock from "@/components/ui/mobile-dock";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -29,8 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Mobile dock navigation (Apple TV+ style) */}
         {/* Mobile dock navigation (Apple TV+ style) */}
         <div className="md:hidden">
-          {/** @ts-expect-error Server Component dynamic import */}
-          {dynamic(() => import("@/components/ott/bottom-navigation"), { ssr: false })()}
+          <MobileDock />
         </div>
 
         {/* Main */}

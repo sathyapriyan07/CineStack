@@ -1,4 +1,4 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -22,7 +22,7 @@ export default {
         glass: 'rgba(18,18,18,0.7)',
       },
       fontFamily: {
-        sans: ['Inter', 'SF Pro Display', ...fontFamily.sans],
+        sans: ['Inter', 'SF Pro Display', ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         xl: '1.125rem', // 18px
