@@ -99,29 +99,28 @@ export default function HeroBanner() {
   if (!currentMovie) return null;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative w-full h-[45vh] min-h-[220px] max-h-[45vh] flex flex-col justify-end overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
           src={currentMovie.backdrop_url}
           alt={currentMovie.title}
-          className="h-full w-full object-cover"
+          className="w-full h-full object-cover object-center max-h-[45vh]"
         />
         {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex h-full items-end pb-32">
-        <div className="w-full px-6">
+      <div className="relative z-10 flex h-full items-end pb-2 md:pb-4">
+        <div className="w-full px-2 sm:px-3">
           {/* Movie Title */}
-          <h1 className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
+          <h1 className="mb-1 text-xl font-semibold leading-tight text-white truncate md:text-2xl lg:text-3xl">
             {currentMovie.title}
           </h1>
-
           {/* Metadata Row */}
-          <div className="mb-6 flex items-center gap-4 text-sm text-white/80">
+          <div className="mb-1 flex items-center gap-1 text-xs text-white/80">
             <div className="flex items-center gap-1">
               <span className="text-yellow-400">⭐</span>
               <span>{currentMovie.vote_average}</span>
@@ -129,46 +128,44 @@ export default function HeroBanner() {
             <span>•</span>
             <span>{currentMovie.release_date}</span>
             <span>•</span>
-            <div className="flex gap-2">
+            <div className="flex gap-0.5">
               {currentMovie.genres.slice(0, 2).map((genre) => (
                 <span
                   key={genre.name}
-                  className="rounded-full bg-white/20 px-3 py-1 text-xs"
+                  className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]"
                 >
                   {genre.name}
                 </span>
               ))}
             </div>
           </div>
-
           {/* CTA Buttons */}
-          <div className="flex gap-4">
+          <div className="flex gap-1.5">
             {user ? (
               <>
                 <Button
                   onClick={handleWatchNow}
-                  className="flex items-center gap-2 rounded-full bg-linear-to-r from-blue-600 to-pink-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                  className="flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-600 to-pink-600 px-3 py-1.5 text-xs font-semibold text-white shadow hover:scale-105 hover:shadow-lg transition"
                 >
-                  <Play className="h-5 w-5 fill-current" />
-                  Watch Now
+                  <Play className="h-4 w-4" />
+                  Watch
                 </Button>
-
                 <Button
                   onClick={handleAddToList}
                   variant="outline"
-                  className="flex items-center gap-2 rounded-full border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/20"
+                  className="flex items-center gap-1 rounded-full border-white/30 bg-white/10 px-2.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm hover:scale-105 hover:bg-white/20 transition"
                 >
-                  <Plus className="h-5 w-5" />
-                  Add to List
+                  <Plus className="h-4 w-4" />
+                  List
                 </Button>
               </>
             ) : (
               <Button
                 onClick={() => router.push('/login')}
-                className="flex items-center gap-2 rounded-full bg-linear-to-r from-green-600 to-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl"
+                className="flex items-center gap-1 rounded-full bg-gradient-to-r from-green-600 to-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow hover:scale-105 hover:shadow-lg transition"
               >
-                <LogIn className="h-5 w-5" />
-                Login to Continue
+                <LogIn className="h-4 w-4" />
+                Login
               </Button>
             )}
           </div>
@@ -176,7 +173,7 @@ export default function HeroBanner() {
       </div>
 
       {/* Carousel Dots */}
-      <div className="absolute bottom-20 left-1/2 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
         {featuredMovies.map((_, index) => (
           <button
             key={index}

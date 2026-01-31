@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Home, Search, Zap, Download, User } from "lucide-react";
+import { Home, Search, LogIn, List } from "lucide-react";
 
 interface BottomNavigationProps {
   activeTab?: string;
@@ -12,9 +12,8 @@ export default function BottomNavigation({ activeTab = "home" }: BottomNavigatio
   const navItems = [
     { id: "home", label: "Home", icon: Home, href: "/ott" },
     { id: "search", label: "Search", icon: Search, href: "/ott/search" },
-    { id: "shorts", label: "Shorts", icon: Zap, href: "/ott/shorts" },
-    { id: "downloads", label: "Downloads", icon: Download, href: "/ott/downloads" },
-    { id: "profile", label: "Profile", icon: User, href: "/ott/profile" },
+    { id: "watchlist", label: "Watchlist", icon: List, href: "/ott/watchlist" },
+    { id: "login", label: "Login", icon: LogIn, href: "/ott/login" },
   ];
 
   return (

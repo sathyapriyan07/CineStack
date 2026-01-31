@@ -24,16 +24,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-[#0f0f0f] text-white font-sans">
-        {/* Floating navbar only on desktop/tablet */}
-        <div className="hidden md:block">
-          <FloatingNavbar />
-        </div>
-        {/* Bottom nav only on mobile */}
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-          <MobileDock />
-        </div>
-        {/* Main content: full width on mobile, centered on larger screens */}
-        <main className="min-h-screen w-full md:max-w-4xl md:mx-auto px-2 sm:px-4 md:px-8 pb-16 md:pb-0">
+        {/* Sticky top header: logo + nav tabs inline, always visible */}
+        <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-md border-b border-white/10 flex items-center px-safe py-2 md:py-3">
+          <div className="flex items-center gap-3 flex-1">
+            <span className="rounded-full bg-white/10 px-3 py-1 text-lg font-bold tracking-tight">RF</span>
+            <span className="font-semibold text-base md:text-lg tracking-tight">RareFinds</span>
+          </div>
+          {/* Nav tabs inline, add more as needed */}
+          <nav className="flex gap-2 md:gap-4 text-sm md:text-base">
+            <a href="/" className="px-2 py-1 rounded-lg hover:bg-white/10 transition">Home</a>
+            <a href="/search" className="px-2 py-1 rounded-lg hover:bg-white/10 transition">Search</a>
+            <a href="/shorts" className="px-2 py-1 rounded-lg hover:bg-white/10 transition">Shorts</a>
+            <a href="/downloads" className="px-2 py-1 rounded-lg hover:bg-white/10 transition">Downloads</a>
+            <a href="/profile" className="px-2 py-1 rounded-lg hover:bg-white/10 transition">Profile</a>
+          </nav>
+        </header>
+        {/* Main content: compact, safe-area, no giant margins */}
+        <main className="min-h-screen w-full max-w-2xl mx-auto px-safe pt-2 pb-4 md:pt-4 md:pb-8 flex flex-col gap-4">
           {children}
         </main>
       </body>
