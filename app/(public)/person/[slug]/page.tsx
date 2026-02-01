@@ -63,134 +63,112 @@ export default async function PersonDetailPage({
     .sort((a, b) => new Date(b.release_date || "1900-01-01").getTime() - new Date(a.release_date || "1900-01-01").getTime());
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f]">
+    <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      <div className="relative h-[50vh] overflow-hidden bg-linear-to-br from-slate-900 to-slate-800">
-        <div className="absolute inset-0 bg-black/30" />
-
-        {/* Content */}
-        <div className="relative z-10 flex h-full items-center">
-          <div className="mx-auto max-w-6xl px-6 w-full">
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-              {/* Profile Image */}
-              <div className="shrink-0">
-                {person.profile_image_url ? (
-                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={person.profile_image_url}
-                      alt={person.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-white shadow-2xl bg-gray-700 flex items-center justify-center">
-                    <span className="text-6xl md:text-8xl font-bold text-white">
-                      {person.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Person Info */}
-              <div className="flex-1 text-center md:text-left text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">{person.name}</h1>
-
-                {/* Known For Department */}
-                {person.known_for_department && (
-                  <Badge variant="secondary" className="text-white mb-4">
-                    {person.known_for_department}
-                  </Badge>
-                )}
-
-                {/* Meta Information */}
-                <div className="flex flex-wrap justify-center md:justify-start items-center gap-4 mb-6 text-sm">
-                  {person.birth_date && (
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>
-                        {new Date(person.birth_date).getFullYear()}
-                        {person.death_date && ` - ${new Date(person.death_date).getFullYear()}`}
-                      </span>
-                    </div>
-                  )}
-
-                  {person.birth_place && (
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      <span>{person.birth_place}</span>
-                    </div>
-                  )}
-
-                  {person.popularity && (
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4" />
-                      <span>Popularity: {person.popularity.toFixed(1)}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Biography */}
-                {person.biography && (
-                  <div className="max-w-3xl">
-                    <h2 className="text-xl font-semibold mb-3">Biography</h2>
-                    <p className="text-gray-200 leading-relaxed">
-                      {person.biography}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+      <div className="relative h-[44vh] flex flex-col items-center justify-center bg-black">
+        {/* Profile Image */}
+        <div className="w-35 h-35 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-2xl mb-4 border-4 border-gray-900 bg-gray-800 flex items-center justify-center">
+          {person.profile_image_url ? (
+            <img
+              src={person.profile_image_url}
+              alt={person.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <span className="text-5xl md:text-7xl font-bold text-white">
+              {person.name.charAt(0).toUpperCase()}
+            </span>
+          )}
         </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        {/* Filmography */}
-        {filmography.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-white mb-8">Filmography</h2>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filmography.map((title: any) => (
-                <div key={title.id} className="space-y-2">
-                  <TitleCard
-                    id={title.id}
-                    title={title.title}
-                    type={title.type}
-                    slug={title.slug}
-                    poster_url={title.poster_url}
-                    rating={title.rating}
-                    release_date={title.release_date}
-                    size="md"
-                  />
-
-                  {/* Roles */}
-                  <div className="space-y-1">
-                    {title.castRoles.slice(0, 2).map((role: any, index: number) => (
-                      <div key={index} className="text-sm text-gray-400">
-                        <span className="text-white font-medium">{role.character_name}</span>
-                        {role.billing_order && role.billing_order <= 5 && (
-                          <Badge variant="outline" className="ml-2 text-xs">
-                            #{role.billing_order}
-                          </Badge>
-                        )}
-                      </div>
-                    ))}
-
-                    {title.crewRoles.slice(0, 2).map((role: any, index: number) => (
-                      <div key={index} className="text-sm text-gray-400">
-                        <span className="text-white font-medium">{role.job}</span>
-                        <span className="text-gray-500"> • {role.department}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+        {/* Name */}
+        <h1 className="text-2xl md:text-3xl font-bold text-white text-center mb-2">{person.name}</h1>
+        {/* Tabs */}
+        <div className="flex justify-center gap-2 mb-4">
+          <button className="px-4 py-2 rounded-full bg-white text-black font-semibold text-sm shadow transition-all">Biography</button>
+          <button className="px-4 py-2 rounded-full bg-gray-800 text-white font-semibold text-sm shadow transition-all">Filmography</button>
+        </div>
+        {/* Meta Information */}
+        <div className="flex flex-wrap justify-center items-center gap-4 mb-4 text-sm">
+          {person.birth_date && (
+            <div className="flex items-center gap-1 text-gray-400">
+              <Calendar className="h-4 w-4" />
+              <span>
+                {new Date(person.birth_date).getFullYear()}
+                {person.death_date && ` - ${new Date(person.death_date).getFullYear()}`}
+              </span>
             </div>
+          )}
+          {person.birth_place && (
+            <div className="flex items-center gap-1 text-gray-400">
+              <MapPin className="h-4 w-4" />
+              <span>{person.birth_place}</span>
+            </div>
+          )}
+          {person.popularity && (
+            <div className="flex items-center gap-1 text-gray-400">
+              <Star className="h-4 w-4" />
+              <span>Popularity: {person.popularity.toFixed(1)}</span>
+            </div>
+          )}
+        </div>
+        {/* Known For Department */}
+        {person.known_for_department && (
+          <Badge variant="secondary" className="text-white mb-2">
+            {person.known_for_department}
+          </Badge>
+        )}
+        {/* Biography */}
+        {person.biography && (
+          <div className="max-w-md mx-auto">
+            <p className="text-gray-300 leading-relaxed text-center space-y-3">
+              {person.biography}
+            </p>
           </div>
         )}
+      </div>
+
+      {/* Filmography Section */}
+      {filmography.length > 0 && (
+        <div className="mx-auto max-w-2xl px-4 py-8">
+          <h2 className="text-xl font-bold text-white mb-4 text-center">Filmography</h2>
+          <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth scrollbar-hide">
+            {filmography.map((title: any) => (
+              <div key={title.id} className="flex flex-col items-center snap-start w-27.5">
+                <TitleCard
+                  id={title.id}
+                  title={title.title}
+                  type={title.type}
+                  slug={title.slug}
+                  poster_url={title.poster_url}
+                  rating={title.rating}
+                  release_date={title.release_date}
+                  size="sm"
+                />
+                {/* Roles */}
+                <div className="space-y-1 mt-1">
+                  {title.castRoles.slice(0, 1).map((role: any, index: number) => (
+                    <div key={index} className="text-xs text-gray-400 text-center">
+                      <span className="text-white font-medium">{role.character_name}</span>
+                      {role.billing_order && role.billing_order <= 5 && (
+                        <Badge variant="outline" className="ml-1 text-[10px]">
+                          #{role.billing_order}
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                  {title.crewRoles.slice(0, 1).map((role: any, index: number) => (
+                    <div key={index} className="text-xs text-gray-400 text-center">
+                      <span className="text-white font-medium">{role.job}</span>
+                      <span className="text-gray-500"> • {role.department}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
         {/* Additional Images */}
         {person.images && person.images.length > 0 && (

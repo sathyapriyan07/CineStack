@@ -41,34 +41,37 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center items-center min-h-[60vh]">
       <form
-        className="w-full rounded-2xl glass p-8 shadow-xl"
+        className="w-[90%] max-w-md bg-gray-900 rounded-2xl p-6 shadow-2xl mx-auto transition-all duration-300"
         onSubmit={onSubmit}
       >
-        <h1 className="mb-2 text-2xl font-bold text-white/95 text-center tracking-tight">
+        <h1 className="mb-2 text-2xl font-bold text-white text-center tracking-tight">
           {mode === "signin" ? "Sign in" : "Create account"}
         </h1>
-        <p className="mb-6 text-xs text-white/70 text-center">
+        <p className="mb-6 text-xs text-gray-400 text-center">
           Guests can browse. Sign in to manage watchlist and ratings.
         </p>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div>
-            <label className="mb-1 block text-xs text-white/60">Email</label>
-            <Input name="email" type="email" required autoComplete="email" />
+            <label className="mb-1 block text-xs text-gray-400">Email</label>
+            <input name="email" type="email" required autoComplete="email"
+              className="w-full h-11 bg-black text-white placeholder-gray-500 rounded-full px-4 text-base outline-none focus:ring-2 focus:ring-white/20 focus:bg-gray-800 transition-all shadow-md" />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-white/60">Password</label>
-            <Input name="password" type="password" required />
+            <label className="mb-1 block text-xs text-gray-400">Password</label>
+            <input name="password" type="password" required
+              className="w-full h-11 bg-black text-white placeholder-gray-500 rounded-full px-4 text-base outline-none focus:ring-2 focus:ring-white/20 focus:bg-gray-800 transition-all shadow-md" />
           </div>
         </div>
-        {error ? <p className="mt-3 text-xs text-red-300">{error}</p> : null}
-        <Button type="submit" disabled={loading} className="mt-6 w-full bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl py-2 text-base transition">
+        {error ? <p className="mt-3 text-xs text-red-400 text-center">{error}</p> : null}
+        <button type="submit" disabled={loading}
+          className="mt-6 w-full bg-white text-black font-semibold rounded-full py-3 text-base transition-all shadow hover:bg-gray-200">
           {loading ? "Please wait..." : mode === "signin" ? "Sign in" : "Sign up"}
-        </Button>
+        </button>
         <button
           type="button"
-          className="mt-4 w-full text-center text-xs text-white/70 hover:text-white/90 underline underline-offset-2"
+          className="mt-4 w-full text-center text-xs text-gray-400 hover:text-white underline underline-offset-2 transition-all"
           onClick={() => setMode((m) => (m === "signin" ? "signup" : "signin"))}
         >
           {mode === "signin"

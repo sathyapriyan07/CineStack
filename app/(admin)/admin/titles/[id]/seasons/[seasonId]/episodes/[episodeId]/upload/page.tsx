@@ -3,8 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// UI imports replaced with basic HTML elements
 import { ArrowLeft, FileVideo, Image, Film } from "lucide-react";
 
 interface UploadPageProps {
@@ -171,7 +170,7 @@ export default function AdminEpisodeUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileUpload(e, 'still')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'still')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
             />
@@ -218,7 +217,7 @@ export default function AdminEpisodeUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept="video/*"
-              onChange={(e) => handleFileUpload(e, 'video')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'video')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
             />
@@ -248,7 +247,7 @@ export default function AdminEpisodeUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept="video/*"
-              onChange={(e) => handleFileUpload(e, 'trailer')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'trailer')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700"
             />
@@ -259,7 +258,7 @@ export default function AdminEpisodeUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept="video/*,image/*"
-              onChange={(e) => handleFileUpload(e, 'bts')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'bts')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
             />
@@ -270,7 +269,7 @@ export default function AdminEpisodeUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept=".srt,.vtt,.sub"
-              onChange={(e) => handleFileUpload(e, 'subtitles')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'subtitles')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-600 file:text-white hover:file:bg-yellow-700"
             />

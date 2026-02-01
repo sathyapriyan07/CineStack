@@ -1,26 +1,18 @@
 "use client";
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Search, Plus, X, CheckCircle, AlertCircle } from "lucide-react";
-
-interface TMDBResult {
-  id: number;
-  title?: string;
-  name?: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  release_date?: string;
-  first_air_date?: string;
-  media_type?: string;
-  overview: string;
-  vote_average: number;
-  genre_ids: number[];
-}
+      <div className="rounded-xl shadow-lg bg-gray-900 p-4 mb-4">
+        <div className="mb-2 flex items-center gap-2 font-bold text-lg">Title Import</div>
+        <div>
+          <input
+            type="text"
+            placeholder="Search titles..."
+            value={searchQuery}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSearch()}
+            className="mb-2 px-3 py-2 rounded bg-gray-900 text-white border border-gray-700 w-full"
+          />
+          <button onClick={handleSearch} disabled={isSearching} className="px-4 py-2 rounded bg-blue-600 text-white">Search</button>
+        </div>
+      </div>
 
 interface ImportItem extends TMDBResult {
   type: "movie" | "series";
@@ -124,8 +116,8 @@ export default function TitleImport() {
             <Input
               placeholder="Search for movies or series..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSearch()}
               className="flex-1"
             />
             <Button onClick={handleSearch} disabled={isSearching}>

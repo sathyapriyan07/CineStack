@@ -1,6 +1,6 @@
 "use client";
 
-import { GlassPosterCard } from "@/components/ui/glass-poster-card";
+// UI import replaced with basic HTML element
 
 interface SearchResult {
   id: string;
@@ -48,7 +48,7 @@ export default function SearchResults({ results, title, isSearchResult = false }
             rating={result.rating}
             release_date={result.year}
             size="sm"
-            className="!w-full"
+            className="w-full"
           />
         ))}
       </div>

@@ -3,8 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// UI imports replaced with basic HTML elements
 import { ArrowLeft, Image, Film, Music } from "lucide-react";
 
 interface UploadPageProps {
@@ -151,7 +150,7 @@ export default function AdminTitleUploadPage({ params }: UploadPageProps) {
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => handleFileUpload(e, 'poster')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFileUpload(e, 'poster')}
               disabled={uploading}
               className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
             />

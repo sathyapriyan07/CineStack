@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// UI imports replaced with basic HTML elements
 import { ArrowLeft, Save } from "lucide-react";
 
 interface EditEpisodePageProps {
@@ -150,7 +148,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
                 type="number"
                 min="1"
                 value={formData.episode_number}
-                onChange={(e) => handleChange("episode_number", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("episode_number", e.target.value)}
                 placeholder="1"
                 required
                 className="bg-white/5 border-white/10 focus:border-red-400"
@@ -165,7 +163,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
               <Input
                 type="text"
                 value={formData.title}
-                onChange={(e) => handleChange("title", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("title", e.target.value)}
                 placeholder="Episode title"
                 required
                 className="bg-white/5 border-white/10 focus:border-red-400"
@@ -179,7 +177,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
               </label>
               <Textarea
                 value={formData.overview}
-                onChange={(e) => handleChange("overview", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange("overview", e.target.value)}
                 placeholder="Episode overview/description..."
                 rows={4}
                 className="bg-white/5 border-white/10 focus:border-red-400"
@@ -195,7 +193,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
                 type="number"
                 min="1"
                 value={formData.runtime}
-                onChange={(e) => handleChange("runtime", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("runtime", e.target.value)}
                 placeholder="45"
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
@@ -209,7 +207,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
               <Input
                 type="date"
                 value={formData.air_date}
-                onChange={(e) => handleChange("air_date", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("air_date", e.target.value)}
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
             </div>
@@ -222,7 +220,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
               <Input
                 type="url"
                 value={formData.still_url}
-                onChange={(e) => handleChange("still_url", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("still_url", e.target.value)}
                 placeholder="https://..."
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
@@ -236,7 +234,7 @@ export default function EditEpisodePage({ params }: EditEpisodePageProps) {
               <Input
                 type="url"
                 value={formData.video_url}
-                onChange={(e) => handleChange("video_url", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("video_url", e.target.value)}
                 placeholder="https://..."
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />

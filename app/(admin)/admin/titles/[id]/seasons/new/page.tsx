@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// UI imports replaced with basic HTML elements
 import { ArrowLeft, Save } from "lucide-react";
 
 interface NewSeasonPageProps {
@@ -100,7 +98,7 @@ export default function NewSeasonPage({ params }: NewSeasonPageProps) {
                 type="number"
                 min="1"
                 value={formData.season_number}
-                onChange={(e) => handleChange("season_number", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("season_number", e.target.value)}
                 placeholder="1"
                 required
                 className="bg-white/5 border-white/10 focus:border-red-400"
@@ -115,7 +113,7 @@ export default function NewSeasonPage({ params }: NewSeasonPageProps) {
               <Input
                 type="text"
                 value={formData.title}
-                onChange={(e) => handleChange("title", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("title", e.target.value)}
                 placeholder="Season title (optional)"
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
@@ -128,7 +126,7 @@ export default function NewSeasonPage({ params }: NewSeasonPageProps) {
               </label>
               <Textarea
                 value={formData.overview}
-                onChange={(e) => handleChange("overview", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange("overview", e.target.value)}
                 placeholder="Season overview/description..."
                 rows={4}
                 className="bg-white/5 border-white/10 focus:border-red-400"
@@ -143,7 +141,7 @@ export default function NewSeasonPage({ params }: NewSeasonPageProps) {
               <Input
                 type="url"
                 value={formData.poster_url}
-                onChange={(e) => handleChange("poster_url", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("poster_url", e.target.value)}
                 placeholder="https://..."
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
@@ -157,7 +155,7 @@ export default function NewSeasonPage({ params }: NewSeasonPageProps) {
               <Input
                 type="date"
                 value={formData.release_date}
-                onChange={(e) => handleChange("release_date", e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("release_date", e.target.value)}
                 className="bg-white/5 border-white/10 focus:border-red-400"
               />
             </div>

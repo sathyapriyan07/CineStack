@@ -9,49 +9,25 @@ interface BottomNavigationProps {
 
 export default function BottomNavigation({ activeTab = "home" }: BottomNavigationProps) {
   const router = useRouter();
-  const navItems = [
-    { id: "home", label: "Home", icon: Home, href: "/ott" },
-    { id: "search", label: "Search", icon: Search, href: "/ott/search" },
-    { id: "watchlist", label: "Watchlist", icon: List, href: "/ott/watchlist" },
-    { id: "login", label: "Login", icon: LogIn, href: "/ott/login" },
-  ];
-
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-t border-white/10">
-      <div className="flex items-center justify-around px-2 py-2">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
-
-          return (
-            <button
-              key={item.id}
-              onClick={() => router.push(item.href)}
-              className={`flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-all duration-200 min-w-0 flex-1 ${
-                isActive
-                  ? "text-white"
-                  : "text-white/60 hover:text-white/80"
-              }`}
-            >
-              <Icon
-                className={`h-6 w-6 mb-1 transition-all ${
-                  isActive ? "scale-110" : ""
-                }`}
-              />
-              <span className={`text-xs font-medium transition-all ${
-                isActive ? "opacity-100" : "opacity-70"
-              }`}>
-                {item.label}
-              </span>
-
-              {/* Active indicator */}
-              {isActive && (
-                <div className="absolute bottom-0 left-1/2 h-1 w-8 -translate-x-1/2 rounded-t-full bg-linear-to-r from-blue-500 to-pink-500" />
-              )}
-            </button>
-          );
-        })}
+    <footer className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 h-[60px] flex items-center justify-between px-4 border-t border-white/10 text-xs font-medium">
+      {/* Left: Copyright/Tagline */}
+      <div className="flex flex-col items-start">
+        <span className="text-white/80 font-semibold">© Rarefindshq</span>
+        <span className="text-white/50 text-[10px]">Your OTT destination</span>
       </div>
-    </nav>
+      {/* Right: Navigation */}
+      <div className="flex gap-4">
+        <button onClick={() => router.push('/ott/watchlist')} className="text-white/80 hover:text-white transition-all rounded-xl px-2 py-1">
+          Watchlist
+        </button>
+        <button onClick={() => router.push('/ott')} className="text-white/80 hover:text-white transition-all rounded-xl px-2 py-1">
+          Browse
+        </button>
+        <button onClick={() => router.push('/ott/login')} className="bg-white text-black rounded-full px-3 py-1 font-semibold shadow hover:bg-gray-200 transition-all">
+          Login
+        </button>
+      </div>
+    </footer>
   );
 }

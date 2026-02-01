@@ -1,116 +1,52 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { GlassPosterCard } from "@/components/ui/glass-poster-card";
+import SectionRow from "../ui/section-row";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getTrendingTitles, getTopRatedTitles } from "@/lib/db/queries";
 
-type TitleCard = {
-  id: string;
-  title: string;
-  type: "movie" | "series";
-  slug: string;
-  poster_url: string | null;
-};
-
-type Section = {
-  id: string;
-  key: string;
-  title: string;
-  sort_order: number;
-  items: TitleCard[];
-};
-
-export default function HomeSections({
-  initialSections,
-}: {
-  initialSections: Section[];
-}) {
-  const [sections, setSections] = useState<Section[]>(initialSections);
+export default function HomeSections() {
+  const [trending, setTrending] = useState([]);
+  const [topRated, setTopRated] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
-
-    const refresh = async () => {
-      const { data } = await supabase
-        .from("home_sections")
-        .select(
-          "id, key, title, sort_order, home_section_items(id, title_id, rank, titles!inner(id, title, type, poster_url, slug, is_published))"
-        )
-        .order("sort_order", { ascending: true });
-
-      const next =
-        data?.map((s: any) => ({
-          id: s.id,
-          key: s.key,
-          title: s.title,
-          sort_order: s.sort_order,
-          items:
-            (s.home_section_items ?? [])
-              .filter((i: any) => i.titles?.is_published)
-              .sort((a: any, b: any) => a.rank - b.rank)
-              .map((i: any) => i.titles) ?? [],
-        })) ?? [];
-      setSections(next);
+    const fetchData = async () => {
+      setLoading(true);
+      const supabase = createSupabaseBrowserClient();
+      const trendingData = await getTrendingTitles(supabase, 12);
+      const topRatedData = await getTopRatedTitles(supabase, 12);
+      setTrending(trendingData);
+      setTopRated(topRatedData);
+      setLoading(false);
     };
-
-    const channel = supabase
-      .channel("public-realtime")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "home_section_items" },
-        refresh
-      )
-      .on("postgres_changes", { event: "*", schema: "public", table: "titles" }, refresh)
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    fetchData();
   }, []);
 
-  if (!sections.length) {
+  if (loading) {
     return (
-      <p className="mt-6 text-sm text-white/60">
-        No curated sections yet. Admins can create them in the dashboard.
-      </p>
+      <div className="space-y-12 pb-24">
+        <div className="h-8 w-1/3 bg-gray-800 rounded-xl animate-pulse" />
+        <div className="flex gap-3 overflow-x-auto pb-1 px-2 snap-x snap-mandatory scroll-smooth scrollbar-hide">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="w-[120px] aspect-[2/3] bg-gray-700 rounded-xl animate-pulse soft-shadow" />
+          ))}
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-16">
-      {sections.map((section) => (
-        <div key={section.id} className="px-6">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">{section.title}</h2>
-            <div className="w-12 h-1 bg-linear-to-r from-blue-500 to-purple-500 rounded-full"></div>
-          </div>
-          <div className="flex gap-7 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory">
-            {section.items.map((t) => (
-              <GlassPosterCard
-                key={t.id}
-                id={t.id}
-                title={t.title}
-                type={t.type}
-                slug={t.slug}
-                poster_url={t.poster_url}
-                size="md"
-                className="snap-start"
-              />
-            ))}
-          </div>
-        </div>
-      ))}
-
-      <div className="flex justify-center px-6">
-        <Link
-          href="/titles"
-          className="bg-white hover:bg-gray-100 text-black px-8 py-4 rounded-full font-semibold text-lg transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
-        >
-          Browse all titles
-        </Link>
-      </div>
+    <div className="space-y-12 pb-24">
+      {trending.length > 0 && (
+        <SectionRow title="Trending Now" items={trending.map(t => ({ poster: t.poster_url, title: t.title }))} />
+      )}
+      {topRated.length > 0 && (
+        <SectionRow title="Top Rated" items={topRated.map(t => ({ poster: t.poster_url, title: t.title }))} />
+      )}
     </div>
   );
 }
+
+// ...existing code...
 

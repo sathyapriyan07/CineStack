@@ -22,11 +22,11 @@ export default async function TitleDetailPage({
   if (!title) return notFound();
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f]">
+    <div className="min-h-screen bg-black">
       <TrackView titleId={title.id} />
 
       {/* Hero Section */}
-      <div className="relative h-[70vh] overflow-hidden">
+      <div className="relative h-[60vh] overflow-hidden flex flex-col items-center justify-center">
         {title.backdrop_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -43,248 +43,82 @@ export default async function TitleDetailPage({
         <div className="absolute inset-0 bg-linear-to-r from-[#0f0f0f]/80 via-transparent to-transparent"></div>
 
         {/* Content */}
-        <div className="relative z-10 flex h-full items-end pb-12">
-          <div className="mx-auto max-w-6xl px-6 w-full">
-            <div className="flex flex-col md:flex-row gap-8 items-end">
-              {/* Poster */}
-              <div className="shrink-0">
-                <div className="w-48 md:w-64 aspect-2/3 overflow-hidden rounded-2xl shadow-2xl">
-                  {title.poster_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={title.poster_url}
-                      alt={title.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center bg-gray-700 rounded-2xl">
-                      <div className="text-center text-gray-500">
-                        <div className="text-6xl mb-4">🎬</div>
-                        <div className="text-sm">No poster</div>
-                      </div>
-                    </div>
-                  )}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full pb-8">
+          {/* Poster */}
+          <div className="w-40 md:w-45 aspect-2/3 overflow-hidden rounded-2xl shadow-2xl mb-4">
+            {title.poster_url ? (
+              <img
+                src={title.poster_url}
+                alt={title.title}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-gray-700 rounded-2xl">
+                <div className="text-center text-gray-500">
+                  <div className="text-6xl mb-4">🎬</div>
+                  <div className="text-sm">No poster</div>
                 </div>
               </div>
-
-              {/* Title Info */}
-              <div className="flex-1 text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-2">{title.title}</h1>
-
-                {title.original_title && title.original_title !== title.title ? (
-                  <p className="text-lg text-gray-300 mb-4">
-                    {title.original_title}
-                  </p>
-                ) : null}
-
-                {/* Rating and Meta Info */}
-                <div className="flex flex-wrap items-center gap-4 mb-6">
-                  {title.rating && (
-                    <div className="flex items-center gap-2 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full">
-                      <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                      <span className="font-bold text-lg">{title.rating.toFixed(1)}</span>
-                      {title.vote_count && (
-                        <span className="text-sm text-gray-300">({title.vote_count})</span>
-                      )}
-                    </div>
-                  )}
-
-                  <Badge variant="secondary" className="text-white border-white/20">
-                    {title.type === "movie" ? "Movie" : "TV Series"}
-                  </Badge>
-
-                  {title.status && (
-                    <Badge variant="outline" className="text-white border-white/30">
-                      {title.status}
-                    </Badge>
-                  )}
-
-                  {title.release_date && (
-                    <div className="flex items-center gap-1 text-gray-300">
-                      <Calendar className="h-4 w-4" />
-                      <span>{new Date(title.release_date).getFullYear()}</span>
-                    </div>
-                  )}
-
-                  {title.runtime && (
-                    <div className="flex items-center gap-1 text-gray-300">
-                      <Clock className="h-4 w-4" />
-                      <span>{title.runtime} min</span>
-                    </div>
-                  )}
-
-                  {title.country && (
-                    <div className="flex items-center gap-1 text-gray-300">
-                      <Globe className="h-4 w-4" />
-                      <span>{title.country}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Genres */}
-                {title.genres && title.genres.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {title.genres.map((genre: any) => (
-                      <Badge key={genre.slug} variant="outline" className="text-white border-white/30 hover:bg-white/10">
-                        {genre.name}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-
-                {/* Tagline */}
-                {title.tagline && (
-                  <p className="text-xl italic text-gray-200 mb-4">
-                    "{title.tagline}"
-                  </p>
-                )}
-
-                {/* Overview */}
-                {title.overview && (
-                  <p className="text-lg text-gray-200 max-w-2xl leading-relaxed mb-8">
-                    {title.overview}
-                  </p>
-                )}
-
-                <TitleActions
-                  titleId={title.id}
-                  trailers={title.trailers}
-                  watchLinks={[]} // TODO: Update with new structure
-                  musicLinks={[]} // TODO: Update with new structure
-                />
-              </div>
-            </div>
+            )}
           </div>
+          {/* Title + Year */}
+          <h1 className="text-3xl md:text-4xl font-bold text-white text-center mb-2">{title.title}</h1>
+          {title.release_date && (
+            <div className="text-base text-gray-400 text-center mb-2">
+              {new Date(title.release_date).getFullYear()}
+            </div>
+          )}
+          {/* Tabs */}
+          <div className="flex justify-center gap-2 mb-6">
+            <button className="px-4 py-2 rounded-full bg-white text-black font-semibold text-sm shadow transition-all">Overview</button>
+            <button className="px-4 py-2 rounded-full bg-gray-800 text-white font-semibold text-sm shadow transition-all">Cast & Crew</button>
+            <button className="px-4 py-2 rounded-full bg-gray-800 text-white font-semibold text-sm shadow transition-all">External Links</button>
+          </div>
+          {/* Overview */}
+          {title.overview && (
+            <p className="text-base text-gray-300 max-w-md mx-auto leading-relaxed mb-6 text-center">
+              {title.overview}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Additional Content Section */}
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        {/* Cast & Crew Section */}
-        {(title.cast.length > 0 || title.crew.length > 0) && (
-          <div className="mb-16">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-white">Cast & Crew</h2>
-              <Link
-                href={`/titles/${slug}/credits`}
-                className="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium"
-              >
-                View all →
-              </Link>
-            </div>
-            <CreditsDisplay cast={title.cast} crew={title.crew} showTopBilled={true} />
-          </div>
-        )}
-
-        {/* Seasons Section for TV Shows */}
-        {title.seasons && title.seasons.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-white mb-8">Seasons</h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {title.seasons.map((season: any) => (
-                <div key={season.id} className="bg-gray-800/50 rounded-xl p-6">
-                  <div className="flex gap-4">
-                    {season.poster_url && (
-                      <div className="shrink-0 w-20 aspect-2/3 rounded-lg overflow-hidden">
-                        <img
-                          src={season.poster_url}
-                          alt={`Season ${season.season_number}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-semibold text-lg">
-                        Season {season.season_number}
-                      </h3>
-                      {season.title && season.title !== `Season ${season.season_number}` && (
-                        <p className="text-gray-300 text-sm mb-2">{season.title}</p>
-                      )}
-                      <p className="text-gray-400 text-sm">
-                        {season.episodes?.length || 0} episodes
-                        {season.release_date && ` • ${new Date(season.release_date).getFullYear()}`}
-                      </p>
-                      {season.overview && (
-                        <p className="text-gray-300 text-sm mt-2 line-clamp-2">
-                          {season.overview}
-                        </p>
-                      )}
+      {/* Cast & Crew Section */}
+      {(title.cast.length > 0 || title.crew.length > 0) && (
+        <div className="mx-auto max-w-2xl px-4 py-8">
+          <h2 className="text-xl font-bold text-white mb-4 text-center">Cast & Crew</h2>
+          {/* Horizontal avatar row for cast */}
+          {title.cast.length > 0 && (
+            <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth scrollbar-hide mb-6">
+              {title.cast.slice(0, 8).map((c: any) => (
+                <div key={c.id} className="flex flex-col items-center snap-start w-16">
+                  {c.people.profile_image_url ? (
+                    <img src={c.people.profile_image_url} alt={c.people.name} className="w-14 h-14 rounded-full object-cover border-2 border-gray-700 mb-1" loading="lazy" />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full bg-gray-700 flex items-center justify-center text-lg font-medium text-gray-300 mb-1">
+                      {c.people.name.charAt(0)}
                     </div>
-                  </div>
+                  )}
+                  <div className="text-xs text-white text-center truncate w-14">{c.people.name}</div>
+                  <div className="text-[10px] text-gray-400 text-center truncate w-14">{c.character_name}</div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Collection Section */}
-        {title.collections && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-white mb-8">Part of the Collection</h2>
-            <div className="bg-gray-800/50 rounded-xl p-6">
-              <div className="flex gap-6">
-                {title.collections.poster_url && (
-                  <div className="shrink-0 w-32 aspect-2/3 rounded-lg overflow-hidden">
-                    <img
-                      src={title.collections.poster_url}
-                      alt={title.collections.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <h3 className="text-white font-semibold text-xl mb-2">
-                    {title.collections.name}
-                  </h3>
-                  {title.collections.overview && (
-                    <p className="text-gray-300 mb-4">{title.collections.overview}</p>
-                  )}
-                  <Link
-                    href={`/collections/${title.collections.slug}`}
-                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-                  >
-                    View Collection →
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Media Section */}
-        {title.media && title.media.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-2xl font-bold text-white mb-8">Media</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {title.media.slice(0, 6).map((media: any) => (
-                <div key={media.id} className="aspect-video rounded-lg overflow-hidden bg-gray-800">
-                  {media.file_type === 'backdrop' && (
-                    <img
-                      src={media.file_path}
-                      alt="Backdrop"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  {media.file_type === 'poster' && (
-                    <img
-                      src={media.file_path}
-                      alt="Poster"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  {media.file_type === 'still' && (
-                    <img
-                      src={media.file_path}
-                      alt="Still"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+          )}
+          {/* Crew row below cast */}
+          {title.crew.length > 0 && (
+            <div className="flex flex-wrap gap-3 justify-center">
+              {title.crew.slice(0, 6).map((c: any) => (
+                <div key={c.id} className="bg-gray-800 rounded-xl px-3 py-2 flex flex-col items-center min-w-20">
+                  <div className="text-xs text-white font-semibold text-center truncate w-16">{c.people.name}</div>
+                  <div className="text-[10px] text-gray-400 text-center truncate w-16">{c.job}</div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

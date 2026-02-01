@@ -131,27 +131,27 @@ export default function ContinueWatching() {
 
   return (
     <section className="space-y-2">
-      <div className="flex items-center justify-between px-0.5">
-        <h2 className="text-sm font-semibold text-white tracking-tight">Continue Watching</h2>
-        <div className="flex gap-0.5">
+      <div className="flex items-center justify-between px-1">
+        <h2 className="text-base font-semibold text-white tracking-tight">Continue Watching</h2>
+        <div className="flex gap-1">
           <button
             onClick={() => scroll("left")}
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-white/20"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-white/80 hover:bg-white/20 transition-all"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={() => scroll("right")}
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-white/20"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-white/80 hover:bg-white/20 transition-all"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-5 w-5" />
           </button>
         </div>
       </div>
 
       <div
         ref={scrollRef}
-        className="flex gap-1.5 overflow-x-auto pb-0.5 px-0.5 snap-x snap-mandatory scrollbar-hide scroll-smooth"
+        className="flex gap-3 overflow-x-auto pb-1 px-1 snap-x snap-mandatory scroll-smooth scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {continueItems.map((item) => (
@@ -163,17 +163,17 @@ export default function ContinueWatching() {
               slug={item.slug}
               poster_url={item.poster_url}
               size="sm"
-              className="!w-28"
+              className="!w-[120px]"
             />
             {/* Progress Bar overlay */}
-            <div className="absolute left-0 right-0 bottom-1 mx-1.5 h-1 rounded-full bg-white/20 overflow-hidden">
+            <div className="absolute left-0 right-0 bottom-1 mx-2 h-1 rounded-full bg-white/20 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 to-pink-500 transition-all duration-300"
                 style={{ width: `${item.progress}%` }}
               />
             </div>
             {/* Episode/Time overlay */}
-            <div className="absolute left-0 right-0 bottom-0 px-1.5 pb-0.5 flex flex-col items-center">
+            <div className="absolute left-0 right-0 bottom-0 px-2 pb-0.5 flex flex-col items-center">
               {item.episode && (
                 <span className="text-[10px] text-white/80 leading-tight">{item.episode}</span>
               )}

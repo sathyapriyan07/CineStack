@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+// UI imports replaced with basic HTML elements
 import { Search, Plus, X, CheckCircle, AlertCircle } from "lucide-react";
 
 interface TMDBPerson {
@@ -112,22 +109,20 @@ export default function PeopleImport() {
         </CardHeader>
         <CardContent>
           <div className="flex gap-3">
-            <Input
-              placeholder="Search for actors, directors, etc..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="flex-1"
-            />
-            <Button onClick={handleSearch} disabled={isSearching}>
-              {isSearching ? "Searching..." : "Search"}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Search Results */}
-      {searchResults.length > 0 && (
+            <div className="rounded-xl shadow-lg bg-gray-900 p-4 mb-4">
+              <div className="mb-2 flex items-center gap-2 font-bold text-lg">People Import</div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Search people..."
+                  value={searchQuery}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSearch()}
+                  className="mb-2 px-3 py-2 rounded bg-gray-900 text-white border border-gray-700 w-full"
+                />
+                <button onClick={handleSearch} disabled={isSearching} className="px-4 py-2 rounded bg-blue-600 text-white">Search</button>
+              </div>
+            </div>
         <Card>
           <CardHeader>
             <CardTitle>Search Results</CardTitle>

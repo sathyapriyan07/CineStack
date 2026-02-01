@@ -2,8 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { FilterBar } from "@/components/ui/filter-bar";
-import { TitleCard } from "@/components/ui/title-card";
+// UI imports replaced with basic HTML elements
 
 interface TitlesClientProps {
   initialSortBy: string;
@@ -88,10 +87,10 @@ export default function TitlesClient({
         sortOrder={sortOrder}
         type={type}
         genre={genre}
-        onSortByChange={(value) => updateFilters({ sortBy: value })}
-        onSortOrderChange={(value) => updateFilters({ sortOrder: value })}
-        onTypeChange={(value) => updateFilters({ type: value })}
-        onGenreChange={(value) => updateFilters({ genre: value })}
+        onSortByChange={(value: string) => updateFilters({ sortBy: value })}
+        onSortOrderChange={(value: string) => updateFilters({ sortOrder: value })}
+        onTypeChange={(value: string) => updateFilters({ type: value })}
+        onGenreChange={(value: string) => updateFilters({ genre: value })}
         availableGenres={availableGenres}
         className="mb-8"
       />
